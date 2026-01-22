@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>StockVision AI – Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary: #7209b7;
+      --accent: #f72585;
+      --success: #4cc9f0;
+      --danger: #f94144;
+      --warning: #f8961e;
+      --dark: #14213d;
+      --dark-light: #1d3557;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --gray-light: #e9ecef;
+      --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
+      --gradient-secondary: linear-gradient(135deg, #7209b7, #f72585);
+      --gradient-accent: linear-gradient(135deg, #4cc9f0, #4895ef);
+      --gradient-dark: linear-gradient(135deg, #14213d, #1d3557);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.16);
+      --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.2);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --radius-full: 9999px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: #0a0e17;
+      color: var(--light);
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Animated Background Elements */
+    .bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(67, 97, 238, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(114, 9, 183, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 80%, rgba(76, 201, 240, 0.1) 0%, transparent 50%);
+      z-index: -2;
+    }
+
+    .floating-elements {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .float-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.3;
+    }
+
+    .circle-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--primary);
+      top: 10%;
+      left: 5%;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .circle-2 {
+      width: 300px;
+      height: 300px;
+      background: var(--secondary);
+      top: 60%;
+      right: 10%;
+      animation: float 25s infinite ease-in-out reverse;
+    }
+
+    .circle-3 {
+      width: 250px;
+      height: 250px;
+      background: var(--accent);
+      bottom: 10%;
+      left: 20%;
+      animation: float 30s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -30px) scale(1.05); }
+      66% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 14, 23, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 0;
+    }
+
+    .navbar-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      font-weight: 700;
+    }
+
+    .nav-brand-text h1 {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-brand-text span {
+      font-size: 13px;
+      color: var(--gray);
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-link {
+      color: var(--gray);
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .nav-link:hover {
+      color: white;
+    }
+
+    /* Login Page Container */
+    .login-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .login-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      gap: 80px;
+    }
+
+    /* Left Side - Login Info */
+    .login-info {
+      flex: 1;
+      max-width: 600px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(67, 97, 238, 0.2);
+      color: var(--primary);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .login-info h2 {
+      font-size: 48px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .login-info p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--gray);
+      margin-bottom: 32px;
+      max-width: 90%;
+    }
+
+    .login-points {
+      list-style: none;
+      margin-bottom: 40px;
+    }
+
+    .login-points li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 16px;
+      color: var(--light);
+    }
+
+    .login-points li:before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      display: inline-block;
+    }
+
+    .login-tagline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      max-width: 500px;
+    }
+
+    .login-tagline span:first-child {
+      display: block;
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .login-tagline span:last-child {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* Right Side - Login Form */
+    .login-form-card {
+      flex: 1;
+      max-width: 480px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 48px 40px;
+      box-shadow: var(--shadow-xl);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-form-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--gradient-primary);
+    }
+
+    .login-form-card h3 {
+      font-size: 32px;
+      margin-bottom: 12px;
+      color: white;
+    }
+
+    .login-subtext {
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .field-group {
+      margin-bottom: 24px;
+    }
+
+    .field-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--light);
+    }
+
+    input[type="tel"],
+    input[type="text"] {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      color: white;
+      font-size: 16px;
+      font-family: var(--font-main);
+      transition: var(--transition);
+      outline: none;
+    }
+
+    input[type="tel"]:focus,
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .otp-group {
+      margin-top: 32px;
+    }
+
+    .login-otp-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .login-otp-row input {
+      text-align: center;
+      letter-spacing: 8px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 32px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: 16px;
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+      border: none;
+      outline: none;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: 0 8px 32px rgba(67, 97, 238, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(67, 97, 238, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      margin-top: 16px;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-3px);
+    }
+
+    /* Login Status */
+    .login-status {
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      text-align: center;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-status.success {
+      background: rgba(76, 201, 240, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(76, 201, 240, 0.2);
+    }
+
+    .login-status.error {
+      background: rgba(249, 65, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid rgba(249, 65, 68, 0.2);
+    }
+
+    .login-status.info {
+      background: rgba(248, 150, 30, 0.1);
+      color: var(--warning);
+      border: 1px solid rgba(248, 150, 30, 0.2);
+    }
+
+    /* Demo OTP Notice */
+    .demo-notice {
+      margin-top: 32px;
+      padding: 16px;
+      background: rgba(248, 150, 30, 0.1);
+      border: 1px solid rgba(248, 150, 30, 0.2);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .demo-notice p {
+      font-size: 14px;
+      color: var(--warning);
+      margin: 0;
+    }
+
+    /* Phone Input Styling */
+    .phone-input-container {
+      position: relative;
+    }
+
+    .country-code {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+      font-weight: 500;
+    }
+
+    .phone-input-container input {
+      padding-left: 70px;
+    }
+
+    /* Timer Display */
+    .otp-timer {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    .otp-timer span {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .login-main {
+        gap: 60px;
+      }
+      
+      .login-info h2 {
+        font-size: 42px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .login-main {
+        flex-direction: column;
+        gap: 60px;
+        padding: 40px 24px;
+      }
+      
+      .login-info,
+      .login-form-card {
+        max-width: 100%;
+        width: 100%;
+      }
+      
+      .login-info h2 {
+        font-size: 36px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar-inner {
+        padding: 0 20px;
+      }
+      
+      .login-main {
+        padding: 40px 16px;
+      }
+      
+      .login-form-card {
+        padding: 32px 24px;
+      }
+      
+      .login-info h2 {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .login-info h2 {
+        font-size: 28px;
+      }
+      
+      .login-form-card {
+        padding: 24px 20px;
+      }
+      
+      .login-otp-row {
+        flex-direction: column;
+      }
+    }
+
+    /* Animation for OTP Input */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .pulse {
+      animation: pulse 0.5s ease;
+    }
+
+    /* Security Badge */
+    .security-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .security-badge i {
+      color: var(--success);
+      font-size: 18px;
+    }
+
+    .security-badge span {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* Phone formatting styles */
+    .phone-input-container input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Loading spinner */
+    .fa-spinner {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="login-page">
+  <!-- Animated background elements -->
+  <div class="bg-gradient"></div>
+  <div class="floating-elements">
+    <div class="float-circle circle-1"></div>
+    <div class="float-circle circle-2"></div>
+    <div class="float-circle circle-3"></div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">
+        <div class="nav-logo">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="nav-brand-text">
+          <h1>StockVision AI</h1>
+          <span>Secure OTP Sign‑in</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+        <a href="login.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="login-main">
+    <section class="login-info">
+      <div class="hero-eyebrow">
+        <i class="fas fa-lock"></i>
+        <span>Secure Authentication</span>
+      </div>
+      <h2>Sign in with Mobile OTP</h2>
+      <p>
+        Use your mobile number to receive a one‑time password and access the advanced stock forecasting dashboard. 
+        This OTP flow is implemented for academic and demonstration purposes.
+      </p>
+      <ul class="login-points">
+        <li>No passwords to remember, just your mobile number</li>
+        <li>OTP is valid for 5 minutes for enhanced security</li>
+        <li>After verification, explore interactive charts and forecasts</li>
+        <li>100% secure with end‑to‑end encryption simulation</li>
+      </ul>
+      <div class="login-tagline">
+        <span>StockVision AI Platform</span>
+        <span>Deep‑learning powered stock analysis & forecasting for academic projects.</span>
+      </div>
+    </section>
+
+    <section class="login-form-card">
+      <h3>Mobile Verification</h3>
+      <p class="login-subtext">
+        Enter your mobile number to receive a one‑time OTP. For demo purposes, OTP will be displayed on screen.
+      </p>
+
+      <div class="field-group">
+        <label for="phone"><i class="fas fa-mobile-alt"></i> Mobile Number</label>
+        <div class="phone-input-container">
+          <span class="country-code">+91</span>
+          <input id="phone" type="tel" placeholder="**********" maxlength="10" />
+        </div>
+      </div>
+
+      <button id="send-otp-btn" class="btn btn-primary">
+        <i class="fas fa-paper-plane"></i> Send OTP
+      </button>
+
+      <div class="field-group otp-group">
+        <label><i class="fas fa-key"></i> Enter OTP</label>
+        <div class="login-otp-row">
+          <input id="otp" type="text" maxlength="6" placeholder="000000" />
+        </div>
+        <div id="otp-timer" class="otp-timer" style="display: none;">
+          OTP expires in: <span id="timer">05:00</span>
+        </div>
+      </div>
+
+      <button id="verify-otp-btn" class="btn btn-outline">
+        <i class="fas fa-check-circle"></i> Verify & Continue
+      </button>
+
+      <div id="login-status" class="login-status"></div>
+
+      <div class="demo-notice">
+        <p><i class="fas fa-info-circle"></i> For demo: Enter any 10-digit number. OTP will be shown as "123456".</p>
+      </div>
+
+      <div class="security-badge">
+        <i class="fas fa-shield-alt"></i>
+        <span>Your data is protected with simulated 256‑bit encryption</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elements
+      const phoneInput = document.getElementById('phone');
+      const otpInput = document.getElementById('otp');
+      const sendOtpBtn = document.getElementById('send-otp-btn');
+      const verifyOtpBtn = document.getElementById('verify-otp-btn');
+      const loginStatus = document.getElementById('login-status');
+      const otpTimer = document.getElementById('otp-timer');
+      const timerDisplay = document.getElementById('timer');
+
+      // Variables
+      let otpSent = false;
+      let timerInterval;
+      let timeLeft = 300; // 5 minutes in seconds
+
+      // Phone number validation - FIXED VERSION
+      phoneInput.addEventListener('input', function(e) {
+        // Allow only numbers
+        this.value = this.value.replace(/\D/g, '');
+        
+        // Limit to 10 digits
+        if (this.value.length > 10) {
+          this.value = this.value.slice(0, 10);
+        }
+        
+        // Update button state
+        updateSendButtonState();
+      });
+
+      // OTP input formatting
+      otpInput.addEventListener('input', function(e) {
+        // Allow only numbers
+        this.value = this.value.replace(/\D/g, '');
+        
+        // Limit to 6 digits
+        if (this.value.length > 6) {
+          this.value = this.value.slice(0, 6);
+        }
+        
+        // Update button state
+        updateVerifyButtonState();
+        
+        // Add pulse animation when typing
+        if (this.value.length > 0) {
+          this.classList.add('pulse');
+          setTimeout(() => this.classList.remove('pulse'), 500);
+        }
+      });
+
+      // Update send button state
+      function updateSendButtonState() {
+        // Get raw phone number (without any formatting)
+        const rawPhoneNumber = phoneInput.value.replace(/\D/g, '');
+        
+        if (rawPhoneNumber.length === 10) {
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.style.opacity = '1';
+          sendOtpBtn.style.cursor = 'pointer';
+        } else {
+          sendOtpBtn.disabled = true;
+          sendOtpBtn.style.opacity = '0.6';
+          sendOtpBtn.style.cursor = 'not-allowed';
+        }
+      }
+
+      // Update verify button state
+      function updateVerifyButtonState() {
+        if (otpSent && otpInput.value.length === 6) {
+          verifyOtpBtn.disabled = false;
+          verifyOtpBtn.style.opacity = '1';
+          verifyOtpBtn.style.cursor = 'pointer';
+        } else {
+          verifyOtpBtn.disabled = true;
+          verifyOtpBtn.style.opacity = '0.6';
+          verifyOtpBtn.style.cursor = 'not-allowed';
+        }
+      }
+
+      // Initialize button states
+      updateSendButtonState();
+      updateVerifyButtonState();
+
+      // Send OTP button click - FIXED VALIDATION
+      sendOtpBtn.addEventListener('click', function() {
+        // Get raw phone number (without any formatting)
+        const rawPhoneNumber = phoneInput.value.replace(/\D/g, '');
+        
+        if (rawPhoneNumber.length !== 10) {
+          showStatus('Please enter a valid 10-digit mobile number.', 'error');
+          return;
+        }
+
+        // Show loading state
+        sendOtpBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        sendOtpBtn.disabled = true;
+
+        // Simulate API call
+        setTimeout(() => {
+          // Success simulation
+          otpSent = true;
+          
+          // Show success message with demo OTP
+          showStatus(`OTP sent to +91 ${rawPhoneNumber}. Demo OTP: <strong>123456</strong>`, 'success');
+          
+          // Reset button
+          sendOtpBtn.innerHTML = '<i class="fas fa-check"></i> OTP Sent';
+          sendOtpBtn.disabled = true;
+          sendOtpBtn.style.background = 'var(--success)';
+          
+          // Enable OTP field
+          otpInput.disabled = false;
+          otpInput.focus();
+          
+          // Start OTP timer
+          startTimer();
+          
+          // Show OTP timer
+          otpTimer.style.display = 'block';
+          
+          // Update verify button state
+          updateVerifyButtonState();
+        }, 1500);
+      });
+
+      // Verify OTP button click
+      verifyOtpBtn.addEventListener('click', function() {
+        const enteredOtp = otpInput.value;
+        
+        if (enteredOtp.length !== 6) {
+          showStatus('Please enter a valid 6-digit OTP.', 'error');
+          return;
+        }
+
+        // Show loading state
+        verifyOtpBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+        verifyOtpBtn.disabled = true;
+
+        // Simulate API verification
+        setTimeout(() => {
+          // For demo purposes, accept any 6-digit number or "123456"
+          if (enteredOtp === '123456' || enteredOtp.length === 6) {
+            showStatus('OTP verified successfully! Redirecting to dashboard...', 'success');
+            
+            // Change button to success state
+            verifyOtpBtn.innerHTML = '<i class="fas fa-check"></i> Verified!';
+            verifyOtpBtn.style.background = 'var(--success)';
+            verifyOtpBtn.style.borderColor = 'var(--success)';
+            
+            // Stop timer
+            clearInterval(timerInterval);
+            
+            // Redirect to dashboard after 2 seconds
+            setTimeout(() => {
+              window.location.href = 'dashboard.html';
+            }, 2000);
+          } else {
+            showStatus('Invalid OTP. Please try again.', 'error');
+            
+            // Reset button
+            verifyOtpBtn.innerHTML = '<i class="fas fa-check-circle"></i> Verify & Continue';
+            verifyOtpBtn.disabled = false;
+          }
+        }, 1500);
+      });
+
+      // Show status message
+      function showStatus(message, type) {
+        loginStatus.innerHTML = message;
+        loginStatus.className = 'login-status ' + type;
+        loginStatus.style.display = 'flex';
+        
+        // Auto-hide info messages after 5 seconds
+        if (type === 'info') {
+          setTimeout(() => {
+            loginStatus.style.display = 'none';
+          }, 5000);
+        }
+      }
+
+      // Start OTP timer
+      function startTimer() {
+        timeLeft = 300; // Reset to 5 minutes
+        updateTimerDisplay();
+        
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateTimerDisplay();
+          
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            otpSent = false;
+            showStatus('OTP has expired. Please request a new one.', 'error');
+            otpTimer.style.display = 'none';
+            
+            // Reset send button
+            sendOtpBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
+            sendOtpBtn.disabled = false;
+            sendOtpBtn.style.background = '';
+            updateSendButtonState();
+            
+            // Disable OTP field
+            otpInput.disabled = true;
+            otpInput.value = '';
+          }
+        }, 1000);
+      }
+
+      // Update timer display
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Change color when less than 1 minute
+        if (timeLeft < 60) {
+          timerDisplay.style.color = 'var(--danger)';
+        } else if (timeLeft < 120) {
+          timerDisplay.style.color = 'var(--warning)';
+        } else {
+          timerDisplay.style.color = 'var(--primary)';
+        }
+      }
+
+      // Enter key to submit
+      phoneInput.addEventListener('keypress', function(e) {
+        // Get raw phone number for validation
+        const rawPhoneNumber = this.value.replace(/\D/g, '');
+        if (e.key === 'Enter' && rawPhoneNumber.length === 10) {
+          sendOtpBtn.click();
+        }
+      });
+
+      otpInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && this.value.length === 6 && otpSent) {
+          verifyOtpBtn.click();
+        }
+      });
+
+      // Format phone number display on blur (visual only, doesn't affect validation)
+      phoneInput.addEventListener('blur', function() {
+        const rawPhoneNumber = this.value.replace(/\D/g, '');
+        if (rawPhoneNumber.length === 10) {
+          // Format: XXX XXX XXXX
+          this.value = rawPhoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+        }
+      });
+
+      phoneInput.addEventListener('focus', function() {
+        // Remove spaces when focused for editing
+        this.value = this.value.replace(/\s/g, '');
+      });
+
+      // Add visual feedback for inputs
+      const inputs = document.querySelectorAll('input');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.style.transform = 'translateY(-2px)';
+        });
+        
+        input.addEventListener('blur', function() {
+          this.parentElement.style.transform = 'translateY(0)';
+        });
+      });
+
+      // Initial status message
+      setTimeout(() => {
+        showStatus('Enter your mobile number to begin verification.', 'info');
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

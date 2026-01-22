@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>StockVision AI – Advanced Stock Analysis Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Animated background elements -->
+  <div class="bg-gradient"></div>
+  <div class="floating-elements">
+    <div class="float-circle circle-1"></div>
+    <div class="float-circle circle-2"></div>
+    <div class="float-circle circle-3"></div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">
+        <div class="nav-logo">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="nav-brand-text">
+          <h1>StockVision<span class="ai-badge">AI</span></h1>
+          <span>Advanced Stock Analysis & Forecasting</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#markets" class="nav-link"><i class="fas fa-chart-bar"></i> Markets</a>
+        <a href="#ideas" class="nav-link"><i class="fas fa-lightbulb"></i> Ideas</a>
+        <a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+        <a href="#support" class="nav-link"><i class="fas fa-headset"></i> Support</a>
+        <a href="login.html" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+      </nav>
+      <button class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Live market data strip -->
+  <section class="live-data-strip">
+    <div class="live-data-inner">
+      <div class="live-ticker">
+        <div class="ticker-item active">
+          <span class="ticker-label">NIFTY 50</span>
+          <span class="ticker-value">23,650.45</span>
+          <span class="ticker-change up">+0.84% <i class="fas fa-arrow-up"></i></span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">SENSEX</span>
+          <span class="ticker-value">78,320.12</span>
+          <span class="ticker-change up">+0.67% <i class="fas fa-arrow-up"></i></span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">NIFTY BANK</span>
+          <span class="ticker-value">51,210.90</span>
+          <span class="ticker-change down">‑0.23% <i class="fas fa-arrow-down"></i></span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">INDIA VIX</span>
+          <span class="ticker-value">12.21</span>
+          <span class="ticker-change down">‑1.05% <i class="fas fa-arrow-down"></i></span>
+        </div>
+      </div>
+      <div class="market-mood">
+        <div class="mood-indicator">
+          <div class="mood-dot"></div>
+          <span>Market Mood: <strong>Neutral</strong></span>
+        </div>
+        <a href="login.html" class="btn-dashboard">
+          <i class="fas fa-tachometer-alt"></i> Launch Dashboard
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero Section -->
+  <main class="landing-container">
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-graduation-cap"></i>
+          <span>Academic Stock Analysis Project</span>
+        </div>
+        <h1 class="hero-title">
+          Visualize, Analyse & Forecast
+          <span class="gradient-text">Indian Markets</span> with AI
+        </h1>
+        <p class="hero-description">
+          A complete web application combining LSTM forecasting, real-time Yahoo Finance data, and an intuitive dashboard — designed for academic demonstrations and project evaluations.
+        </p>
+        <div class="hero-actions">
+          <a href="login.html" class="btn-primary">
+            <i class="fas fa-mobile-alt"></i> Login with Mobile OTP
+          </a>
+          <a href="knowmore.html" class="btn-outline">
+            <i class="fas fa-rocket"></i> Get Knowledge on stocks
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-database"></i>
+            </div>
+            <div class="stat-content">
+              <h3>50K+</h3>
+              <p>Historical data points per symbol</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="stat-content">
+              <h3>LSTM</h3>
+              <p>Deep learning for time‑series</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <div class="stat-content">
+              <h3>3‑Step</h3>
+              <p>Select, run, export forecasts</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="device-mockup">
+          <div class="device-frame">
+            <div class="device-screen">
+              <div class="screen-header">
+                <div class="screen-time">14:30</div>
+                <div class="screen-icons">
+                  <i class="fas fa-signal"></i>
+                  <i class="fas fa-wifi"></i>
+                  <i class="fas fa-battery-full"></i>
+                </div>
+              </div>
+              <div class="screen-content">
+                <div class="app-header">
+                  <h3><i class="fas fa-chart-line"></i> StockVision</h3>
+                  <span class="app-badge">Live</span>
+                </div>
+                <div class="stock-card">
+                  <div class="stock-header">
+                    <span>AAPL</span>
+                    <span class="stock-price">₹15,240.50</span>
+                  </div>
+                  <div class="stock-change up">
+                    <i class="fas fa-arrow-up"></i> +1.2% Today
+                  </div>
+                  <div class="stock-chart-mini">
+                    <!-- Mini chart placeholder -->
+                    <div class="chart-line"></div>
+                  </div>
+                </div>
+                <div class="stock-card">
+                  <div class="stock-header">
+                    <span>INFY</span>
+                    <span class="stock-price">₹1,565.80</span>
+                  </div>
+                  <div class="stock-change up">
+                    <i class="fas fa-arrow-up"></i> +0.8% Today
+                  </div>
+                  <div class="stock-chart-mini">
+                    <!-- Mini chart placeholder -->
+                    <div class="chart-line"></div>
+                  </div>
+                </div>
+                <div class="stock-card">
+                  <div class="stock-header">
+                    <span>RELIANCE</span>
+                    <span class="stock-price">₹2,740.20</span>
+                  </div>
+                  <div class="stock-change down">
+                    <i class="fas fa-arrow-down"></i> -0.4% Today
+                  </div>
+                  <div class="stock-chart-mini">
+                    <!-- Mini chart placeholder -->
+                    <div class="chart-line"></div>
+                  </div>
+                </div>
+                <div class="screen-footer">
+                  <button class="screen-btn">
+                    <i class="fas fa-chart-area"></i> Forecast 14 Days
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="device-shadow"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Market Overview Section -->
+    <section class="section" id="markets">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>Market Overview</h2>
+          <p>Real-time insights and analysis of Indian market indices, top movers, and curated watchlists.</p>
+        </div>
+        <a href="login.html" class="btn-section">
+          <i class="fas fa-external-link-alt"></i> Advanced Analysis
+        </a>
+      </div>
+
+      <div class="market-cards-grid">
+        <div class="market-card premium">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-chart-pie"></i>
+            </div>
+            <h3>Indices Today</h3>
+            <p>Key Market Benchmarks</p>
+          </div>
+          <div class="card-body">
+            <div class="market-row">
+              <div class="market-item">
+                <span class="item-label">NIFTY 50</span>
+                <span class="item-value">23,650.45</span>
+                <span class="item-change up">+0.84%</span>
+              </div>
+              <div class="market-item">
+                <span class="item-label">SENSEX</span>
+                <span class="item-value">78,320.12</span>
+                <span class="item-change up">+0.67%</span>
+              </div>
+              <div class="market-item">
+                <span class="item-label">NIFTY IT</span>
+                <span class="item-value">38,420.65</span>
+                <span class="item-change up">+1.12%</span>
+              </div>
+              <div class="market-item">
+                <span class="item-label">INDIA VIX</span>
+                <span class="item-value">12.21</span>
+                <span class="item-change down">-1.05%</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="#">View All Indices <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="market-card premium">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-exchange-alt"></i>
+            </div>
+            <h3>Today's Movers</h3>
+            <p>Large‑Cap Focus</p>
+          </div>
+          <div class="card-body">
+            <div class="market-row">
+              <div class="market-item">
+                <span class="item-label">RELIANCE</span>
+                <span class="item-value">₹2,740.10</span>
+                <span class="item-change up">+1.45%</span>
+              </div>
+              <div class="market-item">
+                <span class="item-label">TCS</span>
+                <span class="item-value">₹3,820.90</span>
+                <span class="item-change up">+0.97%</span>
+              </div>
+              <div class="market-item">
+                <span class="item-label">HDFCBANK</span>
+                <span class="item-value">₹1,665.40</span>
+                <span class="item-change down">-0.64%</span>
+              </div>
+              <div class="market-item">
+                <span class="item-label">INFY</span>
+                <span class="item-value">₹1,565.85</span>
+                <span class="item-change up">+0.52%</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="#">Explore Movers <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="market-card premium">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-binoculars"></i>
+            </div>
+            <h3>Watchlist Themes</h3>
+            <p>For Exploration</p>
+          </div>
+          <div class="card-body">
+            <div class="market-row">
+              <div class="market-item">
+                <span class="item-label">AI & Cloud</span>
+                <span class="item-value">6 stocks</span>
+                <span class="item-tag high-growth">High Growth</span>
+              </div>
+              <div class="market-item">
+                <span class="item-label">Banking Leaders</span>
+                <span class="item-value">8 stocks</span>
+                <span class="item-tag stable">Stable</span>
+              </div>
+              <div class="market-item">
+                <span class="item-label">EV & Energy</span>
+                <span class="item-value">5 stocks</span>
+                <span class="item-tag thematic">Thematic</span>
+              </div>
+              <div class="market-item">
+                <span class="item-label">Dividend Picks</span>
+                <span class="item-value">10 stocks</span>
+                <span class="item-tag income">Income</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="#">View Themes <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Showcase -->
+    <section class="visual-showcase">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>Built for Clear Storytelling</h2>
+          <p>Visually rich layouts to explain methodology, models, and results in academic reviews.</p>
+        </div>
+      </div>
+
+      <div class="visual-grid">
+        <div class="visual-item">
+          <div class="visual-image img-1">
+            <div class="visual-overlay">
+              <div class="visual-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h3>Clean Interactive Charts</h3>
+              <p>Overlay historical and predicted prices with confidence bands.</p>
+              <a href="#" class="visual-link">Explore Charts <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-item">
+          <div class="visual-image img-2">
+            <div class="visual-overlay">
+              <div class="visual-icon">
+                <i class="fas fa-laptop-mobile"></i>
+              </div>
+              <h3>Multi‑Device Ready</h3>
+              <p>Responsive design that looks great on all screen sizes.</p>
+              <a href="#" class="visual-link">View Responsive <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-item">
+          <div class="visual-image img-3">
+            <div class="visual-overlay">
+              <div class="visual-icon">
+                <i class="fas fa-presentation"></i>
+              </div>
+              <h3>Presentation Friendly</h3>
+              <p>Multiple pages: landing, OTP login, and analysis dashboard.</p>
+              <a href="#" class="visual-link">See Pages <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Ideas -->
+    <section class="section portfolio-section" id="ideas">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>Ready‑Made Study Portfolios</h2>
+          <p>Sample baskets you can analyse with your LSTM forecasting model.</p>
+        </div>
+        <a href="portfolio.html" class="btn-section">
+          <i class="fas fa-plus-circle"></i> Create Custom Portfolio
+        </a>
+      </div>
+
+      <div class="portfolio-grid">
+        <div class="portfolio-card">
+          <div class="portfolio-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <h3>Balanced NIFTY 50 Pack</h3>
+          <p>Large‑cap leaders for demonstrating stable, lower‑volatility behaviour.</p>
+          <div class="portfolio-stats">
+            <div class="stat">
+              <span class="stat-value">10</span>
+              <span class="stat-label">Stocks</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">9.8%</span>
+              <span class="stat-label">Simulated CAGR</span>
+            </div>
+          </div>
+          <a href="#" class="portfolio-link">Analyze Portfolio <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="portfolio-card">
+          <div class="portfolio-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3>High‑Beta Innovators</h3>
+          <p>Technology and mid‑cap names for showcasing risk and sharp swings.</p>
+          <div class="portfolio-stats">
+            <div class="stat">
+              <span class="stat-value">7</span>
+              <span class="stat-label">Stocks</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">High</span>
+              <span class="stat-label">Volatility</span>
+            </div>
+          </div>
+          <a href="#" class="portfolio-link">Analyze Portfolio <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="portfolio-card">
+          <div class="portfolio-icon">
+            <i class="fas fa-chart-network"></i>
+          </div>
+          <h3>Long‑Term Compounders</h3>
+          <p>Quality businesses with consistent earnings and dividends.</p>
+          <div class="portfolio-stats">
+            <div class="stat">
+              <span class="stat-value">12</span>
+              <span class="stat-label">Stocks</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">5+ Year</span>
+              <span class="stat-label">Horizon</span>
+            </div>
+          </div>
+          <a href="#" class="portfolio-link">Analyze Portfolio <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+      <div class="about-container">
+        <div class="about-content">
+          <div class="section-badge">
+            <i class="fas fa-info-circle"></i> About the Platform
+          </div>
+          <h2>StockVision AI: Academic‑Grade Forecasting</h2>
+          <p class="about-description">
+            StockVision AI is crafted as an academic‑grade product experience, not just a single notebook or script.
+            It connects a deep‑learning model to a clean, multi‑page interface that anyone can understand in minutes.
+          </p>
+          <p>
+            The system fetches data from Yahoo Finance, prepares it for the LSTM model, generates future price curves
+            and renders them as interactive charts so you can talk about trend, risk and uncertainty with confidence.
+          </p>
+          <div class="about-features">
+            <div class="feature">
+              <i class="fas fa-database feature-icon"></i>
+              <div class="feature-text">
+                <h4>Real‑Time Data</h4>
+                <p>Live Yahoo Finance integration</p>
+              </div>
+            </div>
+            <div class="feature">
+              <i class="fas fa-brain feature-icon"></i>
+              <div class="feature-text">
+                <h4>LSTM Model</h4>
+                <p>Deep learning for time‑series</p>
+              </div>
+            </div>
+            <div class="feature">
+              <i class="fas fa-chart-area feature-icon"></i>
+              <div class="feature-text">
+                <h4>Interactive Charts</h4>
+                <p>Visualize forecasts with confidence bands</p>
+              </div>
+            </div>
+          </div>
+          <a href="dashboard.html" class="btn-primary">
+            <i class="fas fa-play-circle"></i> Try Forecasting Now
+          </a>
+        </div>
+        <div class="about-visual">
+          <div class="visual-card">
+            <div class="card-header">
+              <h4>Forecast Visualization</h4>
+              <span class="card-badge">Live Demo</span>
+            </div>
+            <div class="card-content">
+              <div class="chart-placeholder">
+                <div class="chart-line-main"></div>
+                <div class="chart-line-prediction"></div>
+                <div class="chart-confidence-band"></div>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <span class="legend-dot historical"></span>
+                  <span>Historical Data</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-dot predicted"></span>
+                  <span>LSTM Prediction</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-dot confidence"></span>
+                  <span>Confidence Band</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Support -->
+    <section class="contact-section" id="support">
+      <div class="contact-container">
+        <div class="contact-info">
+          <div class="section-badge">
+            <i class="fas fa-headset"></i> Contact & Support
+          </div>
+          <h2>Have Questions? We're Here to Help</h2>
+          <p>Reach out to the team for doubts, feedback or collaboration opportunities.</p>
+          
+          <div class="contact-card">
+            <div class="contact-avatar">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="contact-details">
+              <h3>StockVision Support</h3>
+              <p class="contact-name">Ananya G L</p>
+              <p class="contact-role">Creator · StockVision AI</p>
+              
+              <div class="contact-methods">
+                <div class="method">
+                  <i class="fas fa-envelope"></i>
+                  <div>
+                    <span class="method-label">Email</span>
+                    <span class="method-value">project.team@stockvision.com</span>
+                  </div>
+                </div>
+                <div class="method">
+                  <i class="fas fa-phone"></i>
+                  <div>
+                    <span class="method-label">Phone</span>
+                    <span class="method-value">+91‑7666795137</span>
+                  </div>
+                </div>
+                <div class="method">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <div>
+                    <span class="method-label">Location</span>
+                    <span class="method-value">Mangaluru, India</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="disclaimer">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>This application is for academic and educational use only and does not provide investment advice.</p>
+          </div>
+        </div>
+        
+        <div class="contact-form">
+          <div class="form-header">
+            <h3>Send a Quick Message</h3>
+            <p>Share your thoughts or contact the team.</p>
+          </div>
+          
+          <!-- Formspree Contact Form - -->
+          <form action="https://formspree.io/f/mjknjawj" method="POST" id="contactForm">
+            <!-- Hidden Formspree fields for better control -->
+            <input type="hidden" name="_subject" value="New Message from StockVision AI Website">
+            <input type="hidden" name="_replyto" id="replyto-field">
+            <input type="text" name="_gotcha" style="display:none">
+            
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Your Email</label>
+              <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="_subject" placeholder="What is this regarding?" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Your Message</label>
+              <textarea id="message" name="message" rows="4" placeholder="Ask a question or share feedback..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+            
+            <p class="form-note">We typically respond within 24 hours.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-chart-line"></i>
+            <div>
+              <h3>StockVision<span class="ai-badge">AI</span></h3>
+              <p>Advanced Stock Analysis & Forecasting</p>
+            </div>
+          </div>
+          <p class="footer-description">
+            A stock market analysis and forecasting web application using LSTM, Flask and yfinance, designed for academic demonstrations and project evaluations.
+          </p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <div class="link-column">
+            <h4>Assets</h4>
+            <a href="#"><i class="fas fa-chevron-right"></i> Stocks</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Indices</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> ETFs</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Sectors</a>
+          </div>
+          
+          <div class="link-column">
+            <h4>Tools</h4>
+            <a href="dashboard.html"><i class="fas fa-chevron-right"></i> Forecast Dashboard</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Backtest Samples</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Technical Overlays</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Portfolio Analysis</a>
+          </div>
+          
+          <div class="link-column">
+            <h4>Resources</h4>
+            <a href="#"><i class="fas fa-chevron-right"></i> Documentation</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Research Papers</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Tutorial Videos</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Academic Use</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="copyright">
+          <p>© 2025 StockVision AI • For academic and educational use only.</p>
+        </div>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Disclaimer</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Formspree integration enhancements
+    document.addEventListener('DOMContentLoaded', function() {
+      const contactForm = document.getElementById('contactForm');
+      
+      if (contactForm) {
+        // Auto-set replyto field from email input
+        const emailInput = contactForm.querySelector('#email');
+        const replytoField = contactForm.querySelector('#replyto-field');
+        
+        if (emailInput && replytoField) {
+          emailInput.addEventListener('input', function() {
+            replytoField.value = emailInput.value;
+          });
+        }
+        
+        // Optional: Add loading state on form submission
+        contactForm.addEventListener('submit', function() {
+          const submitBtn = contactForm.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+          }
+        });
+        
+        // Check for Formspree success/error in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success')) {
+          // Show success message
+          const formHeader = document.querySelector('.contact-form .form-header');
+          if (formHeader) {
+            const successMsg = document.createElement('div');
+            successMsg.className = 'success-message';
+            successMsg.innerHTML = `
+              <div style="background:#d4edda; color:#155724; padding:12px; border-radius:8px; margin-bottom:20px;">
+                <i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.
+              </div>
+            `;
+            formHeader.parentNode.insertBefore(successMsg, formHeader.nextSibling);
+          }
+          
+          // Clear the form
+          contactForm.reset();
+          
+          // Remove success parameter from URL
+          history.replaceState({}, document.title, window.location.pathname);
+        }
+        
+        if (urlParams.has('error')) {
+          // Show error message
+          const formHeader = document.querySelector('.contact-form .form-header');
+          if (formHeader) {
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'error-message';
+            errorMsg.innerHTML = `
+              <div style="background:#f8d7da; color:#721c24; padding:12px; border-radius:8px; margin-bottom:20px;">
+                <i class="fas fa-exclamation-triangle"></i> There was an error sending your message. Please try again.
+              </div>
+            `;
+            formHeader.parentNode.insertBefore(errorMsg, formHeader.nextSibling);
+          }
+        }
+      }
+      
+      // Mobile menu toggle
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      const navLinks = document.querySelector('.nav-links');
+      
+      if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', function() {
+          navLinks.classList.toggle('active');
+          mobileMenuBtn.querySelector('i').classList.toggle('fa-bars');
+          mobileMenuBtn.querySelector('i').classList.toggle('fa-times');
+        });
+      }
+      
+      // Live ticker animation
+      const tickerItems = document.querySelectorAll('.ticker-item');
+      if (tickerItems.length > 0) {
+        let currentIndex = 0;
+        setInterval(() => {
+          tickerItems.forEach(item => item.classList.remove('active'));
+          currentIndex = (currentIndex + 1) % tickerItems.length;
+          tickerItems[currentIndex].classList.add('active');
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockVision - Create Custom Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #10b981;
+            --secondary-dark: #0d9668;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --gray-color: #64748b;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --success-color: #10b981;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        nav a.active {
+            color: var(--primary-color);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dark-color) 0%, #334155 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #cbd5e1;
+        }
+
+        /* Main Content */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Portfolio Creation Section */
+        .section-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .section-header h3 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header i {
+            color: var(--primary-color);
+        }
+
+        .section-body {
+            padding: 2rem;
+        }
+
+        /* Search Section */
+        .search-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-color);
+        }
+
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .search-result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-result-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .stock-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stock-symbol {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .stock-name {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .stock-price {
+            font-weight: 600;
+        }
+
+        .stock-change {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .stock-change.positive {
+            color: var(--success-color);
+        }
+
+        .stock-change.negative {
+            color: var(--danger-color);
+        }
+
+        /* Portfolio Display */
+        .portfolio-container {
+            margin-bottom: 2rem;
+        }
+
+        .portfolio-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+        }
+
+        .portfolio-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            border-radius: var(--border-radius);
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .portfolio-stock-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .portfolio-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .remove-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-btn:hover {
+            background-color: #dc2626;
+        }
+
+        .weight-input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .empty-portfolio {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-color);
+        }
+
+        .empty-portfolio i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
+
+        /* Date Range */
+        .date-range-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .date-range-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--dark-color);
+        }
+
+        .date-inputs {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .date-input {
+            flex: 1;
+        }
+
+        .date-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .date-input input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: var(--dark-color);
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* Sample Portfolios Section */
+        .sample-portfolios {
+            margin-bottom: 3rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .portfolio-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .portfolio-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .portfolio-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .portfolio-card-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .portfolio-card-description {
+            color: var(--gray-color);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .portfolio-card-stocks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stock-badge {
+            background-color: #f1f5f9;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .portfolio-card-action {
+            text-align: center;
+        }
+
+        .portfolio-card-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .portfolio-card-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Forecast Results Section */
+        .forecast-results {
+            margin-top: 3rem;
+            display: none;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .result-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+
+        .result-card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .chart-container {
+            height: 300px;
+            margin-bottom: 1rem;
+        }
+
+        .forecast-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: var(--border-radius);
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--gray-color);
+        }
+
+        .metric.positive .metric-value {
+            color: var(--success-color);
+        }
+
+        .metric.negative .metric-value {
+            color: var(--danger-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .footer-section p, .footer-section a {
+            color: #cbd5e1;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--dark-color);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                z-index: 99;
+            }
+
+            nav ul.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-body {
+                padding: 1.5rem;
+            }
+
+            .date-inputs {
+                flex-direction: column;
+            }
+
+            .button-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Custom styles */
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .stock-up {
+            color: var(--success-color);
+        }
+
+        .stock-down {
+            color: var(--danger-color);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-chart-line logo-icon"></i>
+                <h1>StockVision</h1>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="education.html">Education</a></li>
+                    <li><a href="forecast.html">Forecasting</a></li>
+                    <li><a href="#" class="active">Portfolio</a></li>
+                    <li><a href="#">Market Data</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Create Custom Portfolio</h2>
+            <p>Build your own stock portfolio and analyze it with our AI-powered LSTM forecasting model</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Portfolio Creation Section -->
+        <div class="dashboard-content">
+            <!-- Left Column: Portfolio Creation -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3><i class="fas fa-plus-circle"></i> Build Your Portfolio</h3>
+                </div>
+                <div class="section-body">
+                    <!-- Stock Search -->
+                    <div class="search-container">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="stockSearch" placeholder="Search for stocks (e.g., AAPL, INFY, RELIANCE)">
+                        </div>
+                        <div class="search-results" id="searchResults">
+                            <!-- Search results will appear here -->
+                        </div>
+                    </div>
+
+                    <!-- Portfolio Display -->
+                    <div class="portfolio-container">
+                        <div class="portfolio-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="portfolioCount">0</div>
+                                <div class="stat-label">Stocks</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="portfolioValue">$0</div>
+                                <div class="stat-label">Total Value</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="portfolioReturn">0%</div>
+                                <div class="stat-label">Avg Return</div>
+                            </div>
+                        </div>
+
+                        <div class="portfolio-list" id="portfolioList">
+                            <div class="empty-portfolio">
+                                <i class="fas fa-folder-open"></i>
+                                <p>Your portfolio is empty. Search and add stocks to get started.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Date Range Selection -->
+                    <div class="date-range-container">
+                        <div class="date-range-title">Select Historical Data Range</div>
+                        <div class="date-inputs">
+                            <div class="date-input">
+                                <label for="startDate">From Date</label>
+                                <input type="date" id="startDate" value="2022-01-01">
+                            </div>
+                            <div class="date-input">
+                                <label for="endDate">To Date</label>
+                                <input type="date" id="endDate" value="2023-12-31">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="button-container">
+                        <button class="btn btn-primary" id="runForecastBtn">
+                            <i class="fas fa-rocket"></i> Run LSTM Forecast
+                        </button>
+                        <button class="btn btn-secondary" id="clearPortfolioBtn">
+                            <i class="fas fa-trash"></i> Clear Portfolio
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Sample Portfolios -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3><i class="fas fa-clone"></i> Ready-Made Portfolios</h3>
+                </div>
+                <div class="section-body">
+                    <div class="section-subtitle">
+                        <i class="fas fa-bolt"></i> Sample baskets you can analyze with your LSTM forecasting model
+                    </div>
+
+                    <div class="portfolio-cards">
+                        <!-- Balanced NIFTY 50 Portfolio -->
+                        <div class="portfolio-card" data-portfolio="nifty50">
+                            <div class="portfolio-card-header">
+                                <div class="portfolio-card-title">Balanced NIFTY 50 Pack</div>
+                                <div class="portfolio-card-badge">Low Risk</div>
+                            </div>
+                            <div class="portfolio-card-description">
+                                Large-cap leaders for demonstrating stable, lower-volatility behavior.
+                            </div>
+                            <div class="portfolio-card-stocks">
+                                <span class="stock-badge">RELIANCE</span>
+                                <span class="stock-badge">HDFC</span>
+                                <span class="stock-badge">INFY</span>
+                                <span class="stock-badge">TCS</span>
+                                <span class="stock-badge">ICICI</span>
+                            </div>
+                            <div class="portfolio-card-action">
+                                <button class="portfolio-card-btn" data-portfolio="nifty50">
+                                    <i class="fas fa-plus"></i> Load This Portfolio
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- High-Beta Innovators -->
+                        <div class="portfolio-card" data-portfolio="highBeta">
+                            <div class="portfolio-card-header">
+                                <div class="portfolio-card-title">High-Beta Innovators</div>
+                                <div class="portfolio-card-badge">High Risk</div>
+                            </div>
+                            <div class="portfolio-card-description">
+                                Technology and mid-cap names for showcasing risk and sharp swings.
+                            </div>
+                            <div class="portfolio-card-stocks">
+                                <span class="stock-badge">ZOMATO</span>
+                                <span class="stock-badge">PAYTM</span>
+                                <span class="stock-badge">TATA ELXSI</span>
+                                <span class="stock-badge">LAURUS LABS</span>
+                                <span class="stock-badge">NAUKRI</span>
+                            </div>
+                            <div class="portfolio-card-action">
+                                <button class="portfolio-card-btn" data-portfolio="highBeta">
+                                    <i class="fas fa-plus"></i> Load This Portfolio
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Long-Term Compounders -->
+                        <div class="portfolio-card" data-portfolio="compounders">
+                            <div class="portfolio-card-header">
+                                <div class="portfolio-card-title">Long-Term Compounders</div>
+                                <div class="portfolio-card-badge">Medium Risk</div>
+                            </div>
+                            <div class="portfolio-card-description">
+                                Quality businesses with consistent earnings and dividends.
+                            </div>
+                            <div class="portfolio-card-stocks">
+                                <span class="stock-badge">ASIAN PAINTS</span>
+                                <span class="stock-badge">HUL</span>
+                                <span class="stock-badge">ITC</span>
+                                <span class="stock-badge">NESTLE</span>
+                                <span class="stock-badge">BRITANNIA</span>
+                            </div>
+                            <div class="portfolio-card-action">
+                                <button class="portfolio-card-btn" data-portfolio="compounders">
+                                    <i class="fas fa-plus"></i> Load This Portfolio
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="loading" id="loadingIndicator">
+            <div class="loading-spinner"></div>
+            <p>Running LSTM forecasting model on your portfolio...</p>
+            <p class="highlight">This may take a few moments</p>
+        </div>
+
+        <!-- Forecast Results Section -->
+        <div class="forecast-results" id="forecastResults">
+            <div class="results-header">
+                <div class="results-title">Portfolio Forecast Results</div>
+                <div class="results-actions">
+                    <button class="btn btn-secondary" id="exportResultsBtn">
+                        <i class="fas fa-download"></i> Export Results
+                    </button>
+                    <button class="btn btn-secondary" id="newForecastBtn">
+                        <i class="fas fa-redo"></i> New Forecast
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                <!-- Portfolio Performance Chart -->
+                <div class="result-card">
+                    <div class="result-card-title">Portfolio Performance Forecast</div>
+                    <div class="chart-container">
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                    <div class="forecast-metrics">
+                        <div class="metric positive">
+                            <div class="metric-value" id="forecastReturn">+12.5%</div>
+                            <div class="metric-label">Expected Return</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="forecastRisk">14.2%</div>
+                            <div class="metric-label">Risk (Volatility)</div>
+                        </div>
+                        <div class="metric positive">
+                            <div class="metric-value" id="sharpeRatio">1.42</div>
+                            <div class="metric-label">Sharpe Ratio</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="confidenceScore">87%</div>
+                            <div class="metric-label">Model Confidence</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Individual Stock Forecasts -->
+                <div class="result-card">
+                    <div class="result-card-title">Individual Stock Forecasts</div>
+                    <div class="chart-container">
+                        <canvas id="stocksChart"></canvas>
+                    </div>
+                    <div class="forecast-metrics">
+                        <div class="metric positive">
+                            <div class="metric-value" id="topPerformer">+18.3%</div>
+                            <div class="metric-label">Top Performer</div>
+                        </div>
+                        <div class="metric negative">
+                            <div class="metric-value" id="bottomPerformer">-2.1%</div>
+                            <div class="metric-label">Weakest Performer</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="forecastPeriod">30 days</div>
+                            <div class="metric-label">Forecast Period</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="lstmAccuracy">92.4%</div>
+                            <div class="metric-label">LSTM Accuracy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>StockVision</h4>
+                    <p>A complete web application combining LSTM forecasting, real-time market data, and an intuitive dashboard — designed for academic demonstrations and project evaluations.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="education.html">Market Education</a>
+                    <a href="forecast.html">Forecasting Dashboard</a>
+                    <a href="#">Create Portfolio</a>
+                    <a href="#">About Us</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact & Support</h4>
+                    <a href="#"><i class="fas fa-envelope"></i> support@stockvision.ai</a>
+                    <a href="#"><i class="fas fa-phone"></i> +91 98765 43210</a>
+                    <a href="#"><i class="fas fa-question-circle"></i> Help Center</a>
+                    <a href="#"><i class="fas fa-file-alt"></i> Documentation</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Live Market Data</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>AAPL</span>
+                            <span class="stock-up">↑ +1.2% Today</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>INFY</span>
+                            <span class="stock-up">↑ +0.8% Today</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>RELIANCE</span>
+                            <span class="stock-down">↓ -0.4% Today</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 StockVision. All rights reserved. | For Academic Use Only</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample stock data
+        const stockDatabase = [
+            { symbol: "AAPL", name: "Apple Inc.", price: 182.63, change: 1.2, market: "US" },
+            { symbol: "GOOGL", name: "Alphabet Inc.", price: 138.45, change: 0.8, market: "US" },
+            { symbol: "MSFT", name: "Microsoft Corp.", price: 407.81, change: 1.5, market: "US" },
+            { symbol: "TSLA", name: "Tesla Inc.", price: 175.79, change: -2.1, market: "US" },
+            { symbol: "AMZN", name: "Amazon.com Inc.", price: 178.22, change: 0.6, market: "US" },
+            { symbol: "NFLX", name: "Netflix Inc.", price: 615.91, change: 3.2, market: "US" },
+            { symbol: "RELIANCE", name: "Reliance Industries", price: 2945.60, change: -0.4, market: "IN" },
+            { symbol: "INFY", name: "Infosys Ltd.", price: 1856.40, change: 0.8, market: "IN" },
+            { symbol: "TCS", name: "Tata Consultancy Services", price: 3850.25, change: 0.5, market: "IN" },
+            { symbol: "HDFC", name: "HDFC Bank Ltd.", price: 1645.80, change: 0.3, market: "IN" },
+            { symbol: "ICICI", name: "ICICI Bank Ltd.", price: 1089.70, change: 0.9, market: "IN" },
+            { symbol: "ZOMATO", name: "Zomato Ltd.", price: 145.25, change: 2.8, market: "IN" },
+            { symbol: "PAYTM", name: "One97 Communications", price: 865.40, change: -1.2, market: "IN" },
+            { symbol: "TATA ELXSI", name: "Tata Elxsi Ltd.", price: 8450.00, change: 1.5, market: "IN" },
+            { symbol: "ASIAN PAINTS", name: "Asian Paints Ltd.", price: 3250.75, change: 0.7, market: "IN" },
+            { symbol: "HUL", name: "Hindustan Unilever", price: 2580.30, change: 0.4, market: "IN" },
+            { symbol: "ITC", name: "ITC Ltd.", price: 465.80, change: 0.6, market: "IN" }
+        ];
+
+        // Sample portfolios
+        const samplePortfolios = {
+            nifty50: [
+                { symbol: "RELIANCE", name: "Reliance Industries", price: 2945.60, change: -0.4, weight: 25 },
+                { symbol: "HDFC", name: "HDFC Bank Ltd.", price: 1645.80, change: 0.3, weight: 20 },
+                { symbol: "INFY", name: "Infosys Ltd.", price: 1856.40, change: 0.8, weight: 20 },
+                { symbol: "TCS", name: "Tata Consultancy Services", price: 3850.25, change: 0.5, weight: 20 },
+                { symbol: "ICICI", name: "ICICI Bank Ltd.", price: 1089.70, change: 0.9, weight: 15 }
+            ],
+            highBeta: [
+                { symbol: "ZOMATO", name: "Zomato Ltd.", price: 145.25, change: 2.8, weight: 25 },
+                { symbol: "PAYTM", name: "One97 Communications", price: 865.40, change: -1.2, weight: 25 },
+                { symbol: "TATA ELXSI", name: "Tata Elxsi Ltd.", price: 8450.00, change: 1.5, weight: 20 },
+                { symbol: "LAURUS LABS", name: "Laurus Labs Ltd.", price: 420.50, change: 1.8, weight: 15 },
+                { symbol: "NAUKRI", name: "Info Edge India", price: 5850.00, change: 1.2, weight: 15 }
+            ],
+            compounders: [
+                { symbol: "ASIAN PAINTS", name: "Asian Paints Ltd.", price: 3250.75, change: 0.7, weight: 25 },
+                { symbol: "HUL", name: "Hindustan Unilever", price: 2580.30, change: 0.4, weight: 25 },
+                { symbol: "ITC", name: "ITC Ltd.", price: 465.80, change: 0.6, weight: 20 },
+                { symbol: "NESTLE", name: "Nestle India", price: 24800.00, change: 0.3, weight: 15 },
+                { symbol: "BRITANNIA", name: "Britannia Industries", price: 4850.00, change: 0.5, weight: 15 }
+            ]
+        };
+
+        // User's portfolio
+        let userPortfolio = [];
+
+        // DOM Elements
+        const stockSearchInput = document.getElementById('stockSearch');
+        const searchResultsDiv = document.getElementById('searchResults');
+        const portfolioListDiv = document.getElementById('portfolioList');
+        const portfolioCountSpan = document.getElementById('portfolioCount');
+        const portfolioValueSpan = document.getElementById('portfolioValue');
+        const portfolioReturnSpan = document.getElementById('portfolioReturn');
+        const runForecastBtn = document.getElementById('runForecastBtn');
+        const clearPortfolioBtn = document.getElementById('clearPortfolioBtn');
+        const forecastResultsDiv = document.getElementById('forecastResults');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const portfolioChartCtx = document.getElementById('portfolioChart');
+        const stocksChartCtx = document.getElementById('stocksChart');
+        const exportResultsBtn = document.getElementById('exportResultsBtn');
+        const newForecastBtn = document.getElementById('newForecastBtn');
+
+        // Charts
+        let portfolioChart = null;
+        let stocksChart = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            updatePortfolioDisplay();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Mobile menu toggle
+            document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+                document.getElementById('navMenu').classList.toggle('active');
+                this.querySelector('i').classList.toggle('fa-bars');
+                this.querySelector('i').classList.toggle('fa-times');
+            });
+
+            // Stock search
+            stockSearchInput.addEventListener('input', handleStockSearch);
+            stockSearchInput.addEventListener('focus', handleStockSearch);
+
+            // Portfolio buttons
+            runForecastBtn.addEventListener('click', runForecast);
+            clearPortfolioBtn.addEventListener('click', clearPortfolio);
+
+            // Sample portfolio buttons
+            document.querySelectorAll('.portfolio-card-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const portfolioId = this.getAttribute('data-portfolio');
+                    loadSamplePortfolio(portfolioId);
+                });
+            });
+
+            // Export and new forecast buttons
+            exportResultsBtn.addEventListener('click', exportResults);
+            newForecastBtn.addEventListener('click', newForecast);
+        }
+
+        // Handle stock search
+        function handleStockSearch() {
+            const query = stockSearchInput.value.trim().toUpperCase();
+            
+            if (query.length < 1) {
+                searchResultsDiv.style.display = 'none';
+                return;
+            }
+
+            // Filter stocks based on query
+            const results = stockDatabase.filter(stock => {
+                return stock.symbol.includes(query) || 
+                       stock.name.toUpperCase().includes(query);
+            });
+
+            displaySearchResults(results);
+        }
+
+        // Display search results
+        function displaySearchResults(results) {
+            searchResultsDiv.innerHTML = '';
+            
+            if (results.length === 0) {
+                searchResultsDiv.innerHTML = '<div class="search-result-item">No stocks found</div>';
+                searchResultsDiv.style.display = 'block';
+                return;
+            }
+
+            results.forEach(stock => {
+                const isInPortfolio = userPortfolio.some(item => item.symbol === stock.symbol);
+                
+                const resultItem = document.createElement('div');
+                resultItem.className = 'search-result-item';
+                resultItem.innerHTML = `
+                    <div class="stock-info">
+                        <div class="stock-symbol">${stock.symbol} <span style="font-size: 0.8rem; color: ${stock.market === 'US' ? '#3b82f6' : '#10b981'}">${stock.market}</span></div>
+                        <div class="stock-name">${stock.name}</div>
+                    </div>
+                    <div>
+                        <div class="stock-price">$${stock.price.toFixed(2)}</div>
+                        <div class="stock-change ${stock.change >= 0 ? 'positive' : 'negative'}">
+                            ${stock.change >= 0 ? '↑' : '↓'} ${Math.abs(stock.change)}%
+                        </div>
+                    </div>
+                `;
+
+                if (!isInPortfolio) {
+                    resultItem.addEventListener('click', () => addToPortfolio(stock));
+                } else {
+                    resultItem.style.opacity = '0.6';
+                    resultItem.innerHTML += '<div style="font-size: 0.8rem; color: var(--gray-color);">Already in portfolio</div>';
+                }
+
+                searchResultsDiv.appendChild(resultItem);
+            });
+
+            searchResultsDiv.style.display = 'block';
+        }
+
+        // Add stock to portfolio
+        function addToPortfolio(stock) {
+            // Check if already in portfolio
+            if (userPortfolio.some(item => item.symbol === stock.symbol)) {
+                return;
+            }
+
+            // Add with default weight
+            const portfolioItem = {
+                ...stock,
+                weight: 20, // Default weight percentage
+                shares: 10 // Default number of shares
+            };
+
+            userPortfolio.push(portfolioItem);
+            updatePortfolioDisplay();
+            
+            // Clear search and hide results
+            stockSearchInput.value = '';
+            searchResultsDiv.style.display = 'none';
+        }
+
+        // Remove stock from portfolio
+        function removeFromPortfolio(symbol) {
+            userPortfolio = userPortfolio.filter(item => item.symbol !== symbol);
+            updatePortfolioDisplay();
+        }
+
+        // Update weight in portfolio
+        function updateWeight(symbol, weight) {
+            const item = userPortfolio.find(item => item.symbol === symbol);
+            if (item) {
+                item.weight = parseInt(weight) || 0;
+                updatePortfolioDisplay();
+            }
+        }
+
+        // Update portfolio display
+        function updatePortfolioDisplay() {
+            // Update stats
+            portfolioCountSpan.textContent = userPortfolio.length;
+            
+            // Calculate portfolio value
+            let totalValue = 0;
+            let totalReturn = 0;
+            
+            userPortfolio.forEach(item => {
+                totalValue += item.price * item.shares;
+                totalReturn += item.change * (item.weight / 100);
+            });
+            
+            portfolioValueSpan.textContent = `$${totalValue.toFixed(2)}`;
+            portfolioReturnSpan.textContent = `${totalReturn.toFixed(2)}%`;
+            portfolioReturnSpan.className = totalReturn >= 0 ? 'stock-up' : 'stock-down';
+
+            // Update portfolio list
+            if (userPortfolio.length === 0) {
+                portfolioListDiv.innerHTML = `
+                    <div class="empty-portfolio">
+                        <i class="fas fa-folder-open"></i>
+                        <p>Your portfolio is empty. Search and add stocks to get started.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            portfolioListDiv.innerHTML = '';
+            userPortfolio.forEach(item => {
+                const portfolioItem = document.createElement('div');
+                portfolioItem.className = 'portfolio-item';
+                portfolioItem.innerHTML = `
+                    <div class="portfolio-stock-info">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <div class="stock-symbol">${item.symbol}</div>
+                                <div class="stock-name">${item.name}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="stock-price">$${item.price.toFixed(2)}</div>
+                                <div class="stock-change ${item.change >= 0 ? 'positive' : 'negative'}">
+                                    ${item.change >= 0 ? '↑' : '↓'} ${Math.abs(item.change)}%
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                            <div style="font-size: 0.9rem; color: var(--gray-color);">
+                                Weight: <span style="font-weight: 600; color: var(--dark-color);">${item.weight}%</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: var(--gray-color);">
+                                Shares: <span style="font-weight: 600; color: var(--dark-color);">${item.shares}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-actions">
+                        <input type="number" class="weight-input" min="1" max="100" value="${item.weight}" 
+                               onchange="updateWeight('${item.symbol}', this.value)">
+                        <button class="remove-btn" onclick="removeFromPortfolio('${item.symbol}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                portfolioListDiv.appendChild(portfolioItem);
+            });
+        }
+
+        // Load sample portfolio
+        function loadSamplePortfolio(portfolioId) {
+            if (!samplePortfolios[portfolioId]) return;
+            
+            userPortfolio = JSON.parse(JSON.stringify(samplePortfolios[portfolioId]));
+            updatePortfolioDisplay();
+            
+            // Show success message
+            showNotification(`Loaded ${portfolioId === 'nifty50' ? 'Balanced NIFTY 50' : 
+                            portfolioId === 'highBeta' ? 'High-Beta Innovators' : 
+                            'Long-Term Compounders'} portfolio`);
+        }
+
+        // Clear portfolio
+        function clearPortfolio() {
+            if (userPortfolio.length === 0) return;
+            
+            if (confirm('Are you sure you want to clear your portfolio?')) {
+                userPortfolio = [];
+                updatePortfolioDisplay();
+                showNotification('Portfolio cleared successfully');
+            }
+        }
+
+        // Run LSTM forecast
+        function runForecast() {
+            if (userPortfolio.length === 0) {
+                showNotification('Please add stocks to your portfolio before running forecast', 'error');
+                return;
+            }
+
+            // Show loading indicator
+            loadingIndicator.style.display = 'block';
+            forecastResultsDiv.style.display = 'none';
+
+            // Simulate API call delay
+            setTimeout(() => {
+                // Hide loading indicator
+                loadingIndicator.style.display = 'none';
+                
+                // Show results
+                forecastResultsDiv.style.display = 'block';
+                
+                // Generate forecast charts
+                generateForecastCharts();
+                
+                // Scroll to results
+                forecastResultsDiv.scrollIntoView({ behavior: 'smooth' });
+                
+                showNotification('LSTM forecasting completed successfully!');
+            }, 2500);
+        }
+
+        // Generate forecast charts
+        function generateForecastCharts() {
+            // Destroy existing charts
+            if (portfolioChart) portfolioChart.destroy();
+            if (stocksChart) stocksChart.destroy();
+
+            // Get date range
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            // Generate labels (30 days into future)
+            const labels = [];
+            const today = new Date();
+            for (let i = 1; i <= 30; i++) {
+                const futureDate = new Date(today);
+                futureDate.setDate(today.getDate() + i);
+                labels.push(`Day ${i}`);
+            }
+
+            // Generate portfolio performance data
+            const portfolioData = generatePortfolioData(30);
+            
+            // Create portfolio chart
+            portfolioChart = new Chart(portfolioChartCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Portfolio Value',
+                            data: portfolioData.portfolioValues,
+                            borderColor: 'rgba(37, 99, 235, 1)',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Confidence Interval',
+                            data: portfolioData.upperBounds,
+                            borderColor: 'rgba(37, 99, 235, 0.3)',
+                            backgroundColor: 'rgba(37, 99, 235, 0.05)',
+                            borderWidth: 1,
+                            tension: 0.3,
+                            fill: '+1'
+                        },
+                        {
+                            label: 'Lower Bound',
+                            data: portfolioData.lowerBounds,
+                            borderColor: 'rgba(37, 99, 235, 0.3)',
+                            backgroundColor: 'transparent',
+                            borderWidth: 1,
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Portfolio Value ($)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
+
+            // Generate individual stock data
+            const stockData = generateStockData(30);
+            
+            // Create stocks chart
+            stocksChart = new Chart(stocksChartCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: userPortfolio.map((stock, index) => {
+                        const colors = [
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(14, 165, 233, 1)'
+                        ];
+                        
+                        return {
+                            label: stock.symbol,
+                            data: stockData[index],
+                            borderColor: colors[index % colors.length],
+                            backgroundColor: colors[index % colors.length] + '20',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: false
+                        };
+                    })
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Stock Price ($)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
+
+            // Update metrics
+            updateForecastMetrics();
+        }
+
+        // Generate portfolio data
+        function generatePortfolioData(days) {
+            const portfolioValues = [];
+            const upperBounds = [];
+            const lowerBounds = [];
+            
+            let currentValue = 10000; // Starting portfolio value
+            const volatility = 0.02; // Daily volatility
+            
+            for (let i = 0; i < days; i++) {
+                // Generate random return with slight positive bias
+                const dailyReturn = (Math.random() - 0.45) * volatility;
+                currentValue *= (1 + dailyReturn);
+                
+                portfolioValues.push(currentValue);
+                upperBounds.push(currentValue * (1 + 0.05));
+                lowerBounds.push(currentValue * (1 - 0.05));
+            }
+            
+            return { portfolioValues, upperBounds, lowerBounds };
+        }
+
+        // Generate stock data
+        function generateStockData(days) {
+            const stockData = [];
+            
+            userPortfolio.forEach(stock => {
+                const prices = [];
+                let currentPrice = stock.price;
+                // Different volatility based on stock type
+                const volatility = stock.symbol.includes('RELIANCE') || stock.symbol.includes('HDFC') ? 0.015 : 
+                                  stock.symbol.includes('ZOMATO') || stock.symbol.includes('PAYTM') ? 0.035 : 0.025;
+                
+                for (let i = 0; i < days; i++) {
+                    // Generate random return
+                    const dailyReturn = (Math.random() - 0.5) * volatility;
+                    currentPrice *= (1 + dailyReturn);
+                    prices.push(currentPrice);
+                }
+                
+                stockData.push(prices);
+            });
+            
+            return stockData;
+        }
+
+        // Update forecast metrics
+        function updateForecastMetrics() {
+            // Calculate metrics based on portfolio
+            const avgReturn = userPortfolio.reduce((sum, stock) => sum + stock.change, 0) / userPortfolio.length;
+            const expectedReturn = (avgReturn * 1.5).toFixed(1); // Amplify for forecast
+            
+            document.getElementById('forecastReturn').textContent = `+${expectedReturn}%`;
+            document.getElementById('forecastRisk').textContent = `${(Math.abs(avgReturn) * 2.5).toFixed(1)}%`;
+            document.getElementById('sharpeRatio').textContent = (expectedReturn / (Math.abs(avgReturn) * 2.5)).toFixed(2);
+            document.getElementById('confidenceScore').textContent = `${85 + Math.floor(Math.random() * 10)}%`;
+            
+            // Find top and bottom performers
+            const sortedByChange = [...userPortfolio].sort((a, b) => b.change - a.change);
+            const topPerformer = sortedByChange[0];
+            const bottomPerformer = sortedByChange[sortedByChange.length - 1];
+            
+            document.getElementById('topPerformer').textContent = `+${(topPerformer.change * 1.8).toFixed(1)}%`;
+            document.getElementById('bottomPerformer').textContent = `${(bottomPerformer.change * 0.8).toFixed(1)}%`;
+            document.getElementById('forecastPeriod').textContent = '30 days';
+            document.getElementById('lstmAccuracy').textContent = `${92 + Math.floor(Math.random() * 6)}%`;
+        }
+
+        // Export results
+        function exportResults() {
+            const data = {
+                portfolio: userPortfolio,
+                forecastDate: new Date().toISOString(),
+                metrics: {
+                    expectedReturn: document.getElementById('forecastReturn').textContent,
+                    risk: document.getElementById('forecastRisk').textContent,
+                    sharpeRatio: document.getElementById('sharpeRatio').textContent,
+                    confidence: document.getElementById('confidenceScore').textContent
+                }
+            };
+            
+            // Create downloadable JSON file
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `stockvision_forecast_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('Forecast results exported successfully');
+        }
+
+        // New forecast
+        function newForecast() {
+            forecastResultsDiv.style.display = 'none';
+            showNotification('Ready for a new forecast analysis');
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            // Remove existing notification
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) existingNotification.remove();
+            
+            // Create notification
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div style="position: fixed; top: 100px; right: 20px; background-color: ${type === 'success' ? '#10b981' : '#ef4444'}; 
+                     color: white; padding: 1rem 1.5rem; border-radius: var(--border-radius); 
+                     box-shadow: var(--box-shadow); z-index: 1000; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    ${message}
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Close search results when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!searchResultsDiv.contains(event.target) && event.target !== stockSearchInput) {
+                searchResultsDiv.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

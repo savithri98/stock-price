@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockVision - Interactive Market Education</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #10b981;
+            --secondary-dark: #0d9668;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --gray-color: #64748b;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --success-color: #10b981;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        nav a.active {
+            color: var(--primary-color);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dark-color) 0%, #334155 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            color: #cbd5e1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #94a3b8;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .section-header h3 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header i {
+            color: var(--primary-color);
+        }
+
+        .section-body {
+            padding: 2rem;
+        }
+
+        .graph-container {
+            margin: 2rem 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: relative;
+            background-color: white;
+            padding: 1rem;
+        }
+
+        .graph-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .graph-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+        }
+
+        .timeframe-selector {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .timeframe-btn {
+            padding: 0.5rem 1rem;
+            background-color: #f1f5f9;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .timeframe-btn:hover {
+            background-color: #e2e8f0;
+        }
+
+        .timeframe-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .graph-wrapper {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+
+        .graph-caption {
+            text-align: center;
+            font-style: italic;
+            color: var(--gray-color);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .content-text {
+            margin-bottom: 1.5rem;
+        }
+
+        .content-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark-color);
+        }
+
+        .content-text p {
+            color: var(--gray-color);
+            margin-bottom: 1rem;
+        }
+
+        .content-text ul, .content-text ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--gray-color);
+        }
+
+        .content-text li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Market Stats */
+        .market-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        /* Key Concepts */
+        .key-concepts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .concept-card {
+            background-color: #f8fafc;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .concept-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark-color);
+        }
+
+        .concept-card p {
+            color: var(--gray-color);
+            font-size: 0.95rem;
+        }
+
+        /* Stock Ticker */
+        .stock-ticker {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem 0;
+            overflow: hidden;
+            margin: 2rem 0;
+            border-radius: var(--border-radius);
+        }
+
+        .ticker-container {
+            display: flex;
+            animation: ticker 30s linear infinite;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            white-space: nowrap;
+        }
+
+        .ticker-symbol {
+            font-weight: 700;
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .ticker-price {
+            margin-right: 0.5rem;
+        }
+
+        .ticker-change {
+            font-weight: 600;
+        }
+
+        .ticker-change.positive {
+            color: var(--success-color);
+        }
+
+        .ticker-change.negative {
+            color: var(--danger-color);
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .footer-section p, .footer-section a {
+            color: #cbd5e1;
+            margin-bottom: 0.8rem;
+            display: block;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            nav ul {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--dark-color);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                z-index: 99;
+            }
+
+            nav ul.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .hero {
+                padding: 3rem 0;
+            }
+
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-body {
+                padding: 1.5rem;
+            }
+
+            .graph-wrapper {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .market-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .key-concepts {
+                grid-template-columns: 1fr;
+            }
+
+            .graph-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Custom styles for the page */
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .stock-up {
+            color: var(--success-color);
+        }
+
+        .stock-down {
+            color: var(--danger-color);
+        }
+
+        .btn-outline {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .pattern-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 1rem;
+        }
+
+        .pattern-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .pattern-dot.active {
+            background-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-chart-line logo-icon"></i>
+                <h1>StockVision</h1>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#" class="active">Education</a></li>
+                    <li><a href="forecast.html">Forecasting</a></li>
+                    <li><a href="#">Market Data</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Interactive Market Education</h2>
+            <p class="hero-subtitle">Learn stock market concepts with real-time interactive charts</p>
+            <p>Explore how the stock market works through interactive visualizations of trading patterns, analysis techniques, and AI forecasting models.</p>
+            <a href="#market-basics" class="btn-primary" style="margin-top: 1rem;">
+                <i class="fas fa-graduation-cap"></i> Start Exploring
+            </a>
+        </div>
+    </section>
+
+    <!-- Live Stock Ticker -->
+    <div class="container">
+        <div class="stock-ticker">
+            <div class="ticker-container">
+                <div class="ticker-item">
+                    <span class="ticker-symbol">AAPL</span>
+                    <span class="ticker-price">$182.63</span>
+                    <span class="ticker-change positive">↑ 1.2%</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">GOOGL</span>
+                    <span class="ticker-price">$138.45</span>
+                    <span class="ticker-change positive">↑ 0.8%</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">MSFT</span>
+                    <span class="ticker-price">$407.81</span>
+                    <span class="ticker-change positive">↑ 1.5%</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">TSLA</span>
+                    <span class="ticker-price">$175.79</span>
+                    <span class="ticker-change negative">↓ 2.1%</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">INFY</span>
+                    <span class="ticker-price">₹1,856.40</span>
+                    <span class="ticker-change positive">↑ 0.8%</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">RELIANCE</span>
+                    <span class="ticker-price">₹2,945.60</span>
+                    <span class="ticker-change negative">↓ 0.4%</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">NFLX</span>
+                    <span class="ticker-price">$615.91</span>
+                    <span class="ticker-change positive">↑ 3.2%</span>
+                </div>
+                <div class="ticker-item">
+                    <span class="ticker-symbol">AMZN</span>
+                    <span class="ticker-price">$178.22</span>
+                    <span class="ticker-change positive">↑ 0.6%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <main class="container dashboard-content">
+        <!-- Market Basics Section -->
+        <section class="section-card" id="market-basics">
+            <div class="section-header">
+                <h3><i class="fas fa-university"></i> Stock Market Basics</h3>
+            </div>
+            <div class="section-body">
+                <div class="content-text">
+                    <h4>What is the Stock Market?</h4>
+                    <p>The stock market is a collection of exchanges where shares of publicly traded companies are bought and sold. It provides companies with access to capital and investors with ownership in companies and the potential for returns.</p>
+                    
+                    <p>When you buy a company's stock, you're purchasing a small piece of that company, called a share. Investors profit when the companies they invest in grow and perform well, which increases the value of their shares.</p>
+                </div>
+                
+                <div class="graph-container">
+                    <div class="graph-controls">
+                        <div class="graph-title">Stock Trading Volume Analysis</div>
+                        <div class="timeframe-selector">
+                            <button class="timeframe-btn active" data-timeframe="1M">1 Month</button>
+                            <button class="timeframe-btn" data-timeframe="3M">3 Months</button>
+                            <button class="timeframe-btn" data-timeframe="6M">6 Months</button>
+                        </div>
+                    </div>
+                    <div class="graph-wrapper">
+                        <canvas id="volumeChart"></canvas>
+                    </div>
+                    <div class="graph-caption">Daily trading volume (in millions) for a major stock over time. Higher volume often indicates increased investor interest.</div>
+                </div>
+                
+                <div class="content-text">
+                    <h4>How Stock Exchanges Work</h4>
+                    <p>Stock exchanges like the NYSE (New York Stock Exchange) and NASDAQ provide the infrastructure for trading stocks. They match buyers with sellers and ensure fair and transparent transactions through:</p>
+                    <ul>
+                        <li><span class="highlight">Order Matching:</span> Connecting buy and sell orders at agreed prices</li>
+                        <li><span class="highlight">Price Discovery:</span> Determining stock prices through supply and demand</li>
+                        <li><span class="highlight">Liquidity Provision:</span> Ensuring there are enough buyers and sellers</li>
+                        <li><span class="highlight">Transaction Settlement:</span> Completing the exchange of shares and money</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Analysis Section -->
+        <section class="section-card" id="market-analysis">
+            <div class="section-header">
+                <h3><i class="fas fa-chart-area"></i> Market Analysis Techniques</h3>
+            </div>
+            <div class="section-body">
+                <div class="content-text">
+                    <h4>Fundamental Analysis</h4>
+                    <p>Fundamental analysis involves evaluating a company's financial health and intrinsic value by examining related economic, financial, and other qualitative and quantitative factors.</p>
+                    
+                    <p>Key metrics used in fundamental analysis include:</p>
+                    <ul>
+                        <li><span class="highlight">Earnings Per Share (EPS):</span> Company profit divided by outstanding shares</li>
+                        <li><span class="highlight">Price-to-Earnings (P/E) Ratio:</span> Stock price divided by earnings per share</li>
+                        <li><span class="highlight">Debt-to-Equity Ratio:</span> Company debt compared to shareholder equity</li>
+                        <li><span class="highlight">Return on Equity (ROE):</span> How effectively management uses investor money</li>
+                    </ul>
+                </div>
+                
+                <div class="graph-container">
+                    <div class="graph-controls">
+                        <div class="graph-title">Fundamental Analysis Metrics Over Time</div>
+                        <div class="timeframe-selector">
+                            <button class="timeframe-btn active" data-metric="eps">EPS</button>
+                            <button class="timeframe-btn" data-metric="pe">P/E Ratio</button>
+                            <button class="timeframe-btn" data-metric="roe">ROE</button>
+                        </div>
+                    </div>
+                    <div class="graph-wrapper">
+                        <canvas id="fundamentalChart"></canvas>
+                    </div>
+                    <div class="graph-caption">Visualization of key fundamental metrics for a company over 5 years. EPS growth typically indicates improving profitability.</div>
+                </div>
+                
+                <div class="content-text">
+                    <h4>Technical Analysis</h4>
+                    <p>Technical analysis focuses on statistical trends gathered from trading activity, such as price movement and volume. Unlike fundamental analysts, technical analysts don't attempt to measure a security's intrinsic value.</p>
+                    
+                    <p>Common technical analysis tools include:</p>
+                    <ol>
+                        <li><span class="highlight">Moving Averages:</span> Smooth out price data to identify trends</li>
+                        <li><span class="highlight">Relative Strength Index (RSI):</span> Measures speed and change of price movements</li>
+                        <li><span class="highlight">Bollinger Bands:</span> Volatility bands placed above and below a moving average</li>
+                        <li><span class="highlight">MACD (Moving Average Convergence Divergence):</span> Shows relationship between two moving averages</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Statistics -->
+        <div class="market-stats">
+            <div class="stat-card">
+                <i class="fas fa-database stat-icon"></i>
+                <div class="stat-value">50K+</div>
+                <div class="stat-label">Historical Data Points</div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-chart-pie stat-icon"></i>
+                <div class="stat-value">3-Step</div>
+                <div class="stat-label">Analysis Process</div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-bolt stat-icon"></i>
+                <div class="stat-value">Real-time</div>
+                <div class="stat-label">Market Data</div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-robot stat-icon"></i>
+                <div class="stat-value">AI-Powered</div>
+                <div class="stat-label">Forecasting</div>
+            </div>
+        </div>
+
+        <!-- Stock Price Patterns -->
+        <section class="section-card" id="price-patterns">
+            <div class="section-header">
+                <h3><i class="fas fa-project-diagram"></i> Common Stock Price Patterns</h3>
+            </div>
+            <div class="section-body">
+                <div class="content-text">
+                    <p>Technical analysts study price patterns to predict future market movements. These patterns form when security prices chart a recognizable shape, which can signal whether prices will continue in their current direction or reverse.</p>
+                </div>
+                
+                <div class="graph-container">
+                    <div class="graph-controls">
+                        <div class="graph-title">Technical Chart Patterns</div>
+                        <div class="pattern-indicator">
+                            <div class="pattern-dot active" data-pattern="head-shoulders"></div>
+                            <div class="pattern-dot" data-pattern="cup-handle"></div>
+                            <div class="pattern-dot" data-pattern="double-top"></div>
+                            <div class="pattern-dot" data-pattern="triangle"></div>
+                        </div>
+                    </div>
+                    <div class="graph-wrapper">
+                        <canvas id="patternChart"></canvas>
+                    </div>
+                    <div class="graph-caption">Visualization of common technical analysis chart patterns. Click the dots above to switch between patterns.</div>
+                </div>
+                
+                <div class="key-concepts">
+                    <div class="concept-card">
+                        <h4>Head and Shoulders</h4>
+                        <p>A reversal pattern that predicts a bullish-to-bearish trend reversal. It consists of three peaks, with the middle peak (head) being the highest and the two outside peaks (shoulders) being lower and roughly equal.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>Cup and Handle</h4>
+                        <p>A bullish continuation pattern where the price initially drops then rises to form a "U" shape (the cup), followed by a small downward drift (the handle) before breaking out to continue the upward trend.</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h4>Double Top/Bottom</h4>
+                        <p>Reversal patterns. A double top (M shape) signals a bullish-to-bearish reversal, while a double bottom (W shape) signals a bearish-to-bullish reversal. Both patterns show two failed attempts to break through a price level.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Forecasting -->
+        <section class="section-card" id="market-forecasting">
+            <div class="section-header">
+                <h3><i class="fas fa-crystal-ball"></i> Market Forecasting with AI</h3>
+            </div>
+            <div class="section-body">
+                <div class="content-text">
+                    <h4>LSTM Neural Networks for Stock Prediction</h4>
+                    <p>Long Short-Term Memory (LSTM) networks are a type of recurrent neural network capable of learning order dependence in sequence prediction problems. This makes them ideal for time-series forecasting like stock price prediction.</p>
+                    
+                    <p>StockVision uses LSTM models trained on <span class="highlight">50,000+ historical data points</span> to identify complex patterns in market data that might be invisible to human analysts.</p>
+                </div>
+                
+                <div class="graph-container">
+                    <div class="graph-controls">
+                        <div class="graph-title">AI Forecasting vs Actual Prices</div>
+                        <div class="timeframe-selector">
+                            <button class="timeframe-btn active" data-forecast="1M">1 Month</button>
+                            <button class="timeframe-btn" data-forecast="3M">3 Months</button>
+                            <button class="timeframe-btn" data-forecast="6M">6 Months</button>
+                        </div>
+                    </div>
+                    <div class="graph-wrapper">
+                        <canvas id="forecastChart"></canvas>
+                    </div>
+                    <div class="graph-caption">AI prediction (blue) vs actual stock prices (orange) over time. The shaded area represents the model's confidence interval.</div>
+                </div>
+                
+                <div class="content-text">
+                    <h4>How Our Forecasting Works</h4>
+                    <p>Our AI-powered forecasting dashboard follows a 3-step process:</p>
+                    <ol>
+                        <li><span class="highlight">Data Collection:</span> Real-time and historical data from Yahoo Finance and other trusted sources</li>
+                        <li><span class="highlight">Model Training:</span> LSTM networks are trained on historical patterns and market indicators</li>
+                        <li><span class="highlight">Prediction Generation:</span> The model generates forecasts with confidence intervals for multiple time horizons</li>
+                    </ol>
+                    
+                    <p>This approach allows investors to make data-driven decisions based on sophisticated AI analysis rather than just intuition.</p>
+                    
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="login.html" class="btn-primary">
+                            <i class="fas fa-rocket"></i> Go to Forecasting Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>StockVision</h4>
+                    <p>A complete web application combining LSTM forecasting, real-time market data, and an intuitive dashboard — designed for academic demonstrations and project evaluations.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="#">Market Education</a>
+                    <a href="forecast.html">Forecasting Dashboard</a>
+                    <a href="#">Market Data</a>
+                    <a href="#">About Us</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact & Support</h4>
+                    <a href="#"><i class="fas fa-envelope"></i> support@stockvision.ai</a>
+                    <a href="#"><i class="fas fa-phone"></i> +91 98765 43210</a>
+                    <a href="#"><i class="fas fa-question-circle"></i> Help Center</a>
+                    <a href="#"><i class="fas fa-file-alt"></i> Documentation</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Live Market Data</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>AAPL</span>
+                            <span class="stock-up">↑ +1.2% Today</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>INFY</span>
+                            <span class="stock-up">↑ +0.8% Today</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>RELIANCE</span>
+                            <span class="stock-down">↓ -0.4% Today</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 StockVision. All rights reserved. | For Academic Use Only</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navMenu').classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if(this.getAttribute('href') === '#') return;
+                
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.getElementById('navMenu').classList.remove('active');
+                    document.getElementById('mobileMenuBtn').querySelector('i').classList.remove('fa-times');
+                    document.getElementById('mobileMenuBtn').querySelector('i').classList.add('fa-bars');
+                }
+            });
+        });
+
+        // Add active class to nav items based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section-card');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                
+                if(window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                    currentSection = '#' + section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('href') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Chart.js implementation for interactive graphs
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chart 1: Trading Volume
+            const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+            let volumeChart = new Chart(volumeCtx, {
+                type: 'bar',
+                data: {
+                    labels: generateMonthLabels(30),
+                    datasets: [{
+                        label: 'Trading Volume (in millions)',
+                        data: generateRandomData(30, 10, 50),
+                        backgroundColor: 'rgba(37, 99, 235, 0.7)',
+                        borderColor: 'rgba(37, 99, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Volume (Millions)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Trading Days'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Fundamental Analysis
+            const fundamentalCtx = document.getElementById('fundamentalChart').getContext('2d');
+            let fundamentalChart = new Chart(fundamentalCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2019', '2020', '2021', '2022', '2023'],
+                    datasets: [{
+                        label: 'EPS ($)',
+                        data: [2.15, 2.58, 3.28, 3.11, 3.75],
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Earnings Per Share ($)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 3: Technical Patterns
+            const patternCtx = document.getElementById('patternChart').getContext('2d');
+            let patternChart = new Chart(patternCtx, {
+                type: 'line',
+                data: generateHeadAndShouldersData(),
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Price ($)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Trading Period'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 4: AI Forecasting
+            const forecastCtx = document.getElementById('forecastChart').getContext('2d');
+            const {labels, actualData, forecastData} = generateForecastData(30);
+            
+            let forecastChart = new Chart(forecastCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Actual Price',
+                            data: actualData,
+                            borderColor: 'rgba(245, 158, 11, 1)',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'AI Forecast',
+                            data: forecastData,
+                            borderColor: 'rgba(37, 99, 235, 1)',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Price ($)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Days'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Timeframe selector for volume chart
+            document.querySelectorAll('.timeframe-selector .timeframe-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons in this group
+                    this.parentElement.querySelectorAll('.timeframe-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update chart based on timeframe
+                    const timeframe = this.getAttribute('data-timeframe');
+                    let days = 30;
+                    if (timeframe === '3M') days = 90;
+                    if (timeframe === '6M') days = 180;
+                    
+                    volumeChart.data.labels = generateMonthLabels(days);
+                    volumeChart.data.datasets[0].data = generateRandomData(days, 5, 60);
+                    volumeChart.update();
+                });
+            });
+
+            // Metric selector for fundamental chart
+            document.querySelectorAll('[data-metric]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons in this group
+                    this.parentElement.querySelectorAll('.timeframe-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update chart based on metric
+                    const metric = this.getAttribute('data-metric');
+                    
+                    if (metric === 'eps') {
+                        fundamentalChart.data.datasets[0].data = [2.15, 2.58, 3.28, 3.11, 3.75];
+                        fundamentalChart.data.datasets[0].label = 'EPS ($)';
+                        fundamentalChart.options.scales.y.title.text = 'Earnings Per Share ($)';
+                    } else if (metric === 'pe') {
+                        fundamentalChart.data.datasets[0].data = [18.2, 22.5, 25.1, 20.8, 24.3];
+                        fundamentalChart.data.datasets[0].label = 'P/E Ratio';
+                        fundamentalChart.options.scales.y.title.text = 'Price-to-Earnings Ratio';
+                    } else if (metric === 'roe') {
+                        fundamentalChart.data.datasets[0].data = [15.2, 16.8, 18.5, 17.1, 19.3];
+                        fundamentalChart.data.datasets[0].label = 'ROE (%)';
+                        fundamentalChart.options.scales.y.title.text = 'Return on Equity (%)';
+                    }
+                    
+                    fundamentalChart.update();
+                });
+            });
+
+            // Pattern selector for pattern chart
+            document.querySelectorAll('.pattern-dot').forEach(dot => {
+                dot.addEventListener('click', function() {
+                    // Remove active class from all dots
+                    this.parentElement.querySelectorAll('.pattern-dot').forEach(d => {
+                        d.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked dot
+                    this.classList.add('active');
+                    
+                    // Update chart based on pattern
+                    const pattern = this.getAttribute('data-pattern');
+                    
+                    if (pattern === 'head-shoulders') {
+                        patternChart.data = generateHeadAndShouldersData();
+                    } else if (pattern === 'cup-handle') {
+                        patternChart.data = generateCupAndHandleData();
+                    } else if (pattern === 'double-top') {
+                        patternChart.data = generateDoubleTopData();
+                    } else if (pattern === 'triangle') {
+                        patternChart.data = generateTriangleData();
+                    }
+                    
+                    patternChart.update();
+                });
+            });
+
+            // Forecast timeframe selector
+            document.querySelectorAll('[data-forecast]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons in this group
+                    this.parentElement.querySelectorAll('.timeframe-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Update chart based on timeframe
+                    const timeframe = this.getAttribute('data-forecast');
+                    let days = 30;
+                    if (timeframe === '3M') days = 90;
+                    if (timeframe === '6M') days = 180;
+                    
+                    const {labels, actualData, forecastData} = generateForecastData(days);
+                    
+                    forecastChart.data.labels = labels;
+                    forecastChart.data.datasets[0].data = actualData;
+                    forecastChart.data.datasets[1].data = forecastData;
+                    forecastChart.update();
+                });
+            });
+
+            // Helper functions to generate chart data
+            function generateMonthLabels(count) {
+                const labels = [];
+                for (let i = 0; i < count; i++) {
+                    labels.push(`Day ${i + 1}`);
+                }
+                return labels;
+            }
+
+            function generateRandomData(count, min, max) {
+                const data = [];
+                let lastValue = (min + max) / 2;
+                
+                for (let i = 0; i < count; i++) {
+                    // Add some randomness but keep it somewhat connected
+                    const change = (Math.random() - 0.5) * (max - min) * 0.2;
+                    lastValue = Math.max(min, Math.min(max, lastValue + change));
+                    data.push(lastValue);
+                }
+                return data;
+            }
+
+            function generateHeadAndShouldersData() {
+                const data = [];
+                // Left shoulder
+                for (let i = 0; i < 10; i++) {
+                    data.push(100 + i * 2);
+                }
+                // Head
+                for (let i = 0; i < 15; i++) {
+                    data.push(118 + i * 1.5);
+                }
+                for (let i = 0; i < 15; i++) {
+                    data.push(140 - i * 1.5);
+                }
+                // Right shoulder
+                for (let i = 0; i < 10; i++) {
+                    data.push(118 - i * 2);
+                }
+                // Neckline decline
+                for (let i = 0; i < 10; i++) {
+                    data.push(98 - i * 1.5);
+                }
+                
+                return {
+                    labels: Array.from({length: data.length}, (_, i) => `Day ${i + 1}`),
+                    datasets: [{
+                        label: 'Head and Shoulders Pattern',
+                        data: data,
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        fill: false
+                    }]
+                };
+            }
+
+            function generateCupAndHandleData() {
+                const data = [];
+                // Cup formation
+                for (let i = 0; i < 20; i++) {
+                    data.push(100 - i * 1.5);
+                }
+                for (let i = 0; i < 25; i++) {
+                    data.push(70 + i * 1.2);
+                }
+                // Handle formation
+                for (let i = 0; i < 10; i++) {
+                    data.push(98 - i * 0.8);
+                }
+                for (let i = 0; i < 5; i++) {
+                    data.push(90 + i * 2);
+                }
+                
+                return {
+                    labels: Array.from({length: data.length}, (_, i) => `Day ${i + 1}`),
+                    datasets: [{
+                        label: 'Cup and Handle Pattern',
+                        data: data,
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        fill: false
+                    }]
+                };
+            }
+
+            function generateDoubleTopData() {
+                const data = [];
+                // First peak
+                for (let i = 0; i < 15; i++) {
+                    data.push(80 + i * 2);
+                }
+                for (let i = 0; i < 10; i++) {
+                    data.push(110 - i * 1.5);
+                }
+                // Second peak
+                for (let i = 0; i < 10; i++) {
+                    data.push(95 + i * 1.5);
+                }
+                for (let i = 0; i < 15; i++) {
+                    data.push(110 - i * 2);
+                }
+                
+                return {
+                    labels: Array.from({length: data.length}, (_, i) => `Day ${i + 1}`),
+                    datasets: [{
+                        label: 'Double Top Pattern',
+                        data: data,
+                        borderColor: 'rgba(245, 158, 11, 1)',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        fill: false
+                    }]
+                };
+            }
+
+            function generateTriangleData() {
+                const data = [];
+                // Converging triangle
+                let upper = 110;
+                let lower = 90;
+                
+                for (let i = 0; i < 40; i++) {
+                    const t = i / 40;
+                    const range = upper - lower;
+                    const currentUpper = 110 - t * 15;
+                    const currentLower = 90 + t * 15;
+                    const mid = (currentUpper + currentLower) / 2;
+                    const amplitude = (currentUpper - currentLower) / 2;
+                    
+                    // Create a sawtooth pattern within the converging boundaries
+                    const cycle = i % 10;
+                    const value = mid + amplitude * Math.sin(cycle * 0.6 - 1) * 0.8;
+                    data.push(value);
+                }
+                
+                return {
+                    labels: Array.from({length: data.length}, (_, i) => `Day ${i + 1}`),
+                    datasets: [{
+                        label: 'Triangle Pattern',
+                        data: data,
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        fill: false
+                    }]
+                };
+            }
+
+            function generateForecastData(days) {
+                const labels = [];
+                const actualData = [];
+                const forecastData = [];
+                
+                let actual = 100;
+                let forecast = 100;
+                
+                for (let i = 0; i < days; i++) {
+                    labels.push(`Day ${i + 1}`);
+                    
+                    // Generate actual data with some randomness
+                    const actualChange = (Math.random() - 0.5) * 3;
+                    actual += actualChange;
+                    actualData.push(actual);
+                    
+                    // Generate forecast data that follows similar pattern but with some error
+                    if (i < days * 0.7) {
+                        // For the first 70% of days, forecast is close to actual
+                        const forecastError = (Math.random() - 0.5) * 2;
+                        forecast = actual + forecastError;
+                    } else {
+                        // For the last 30%, forecast diverges (predicting future)
+                        const forecastChange = (Math.random() - 0.4) * 2.5;
+                        forecast += forecastChange;
+                    }
+                    forecastData.push(forecast);
+                }
+                
+                return {labels, actualData, forecastData};
+            }
+        });
+    </script>
+</body>
+</html>
