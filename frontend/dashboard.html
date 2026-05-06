@@ -1,41 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>StockVision AI – Advanced Forecasting Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
   <style>
     :root {
-      --primary: #4361ee;
-      --primary-dark: #3a56d4;
-      --secondary: #7209b7;
-      --accent: #f72585;
-      --success: #4cc9f0;
-      --danger: #f94144;
-      --warning: #f8961e;
-      --dark: #14213d;
-      --dark-light: #1d3557;
-      --light: #f8f9fa;
-      --gray: #6c757d;
-      --gray-light: #e9ecef;
-      --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
-      --gradient-secondary: linear-gradient(135deg, #7209b7, #f72585);
-      --gradient-accent: linear-gradient(135deg, #4cc9f0, #4895ef);
-      --gradient-dark: linear-gradient(135deg, #14213d, #1d3557);
-      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
-      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.16);
-      --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.2);
-      --radius-sm: 8px;
-      --radius-md: 16px;
-      --radius-lg: 24px;
-      --radius-xl: 32px;
+      --primary: #2563eb;
+      /* Electric Azure */
+      --primary-dark: #1d4ed8;
+      --secondary: #0ea5e9;
+      /* Sky Blue */
+      --accent: #f59e0b;
+      /* Amber/Gold */
+      --success: #10b981;
+      /* Emerald Green */
+      --danger: #ef4444;
+      /* Rose Red */
+      --warning: #f59e0b;
+      --dark: #0f172a;
+      /* Slate 900 */
+      --dark-light: #1e293b;
+      /* Slate 800 */
+      --light: #f8fafc;
+      /* Crisp White */
+      --gray: #94a3b8;
+      --gray-light: #334155;
+      --gradient-primary: linear-gradient(135deg, #2563eb, #1e40af);
+      --gradient-secondary: linear-gradient(135deg, #0f172a, #1e293b);
+      --gradient-accent: linear-gradient(135deg, #f59e0b, #d97706);
+      --gradient-dark: linear-gradient(135deg, #020617, #0f172a);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
       --radius-full: 9999px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --transition: all 0.2s ease;
+      --font-main: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
     }
 
     * {
@@ -50,24 +60,33 @@
 
     body {
       font-family: var(--font-main);
-      background-color: #0a0e17;
+      background-color: #030712;
       color: var(--light);
       overflow-x: hidden;
       position: relative;
       min-height: 100vh;
     }
 
-    /* Animated Background Elements */
-    .bg-gradient {
+    /* Sleek Professional Background */
+    .bg-premium {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 20% 50%, rgba(67, 97, 238, 0.15) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 20%, rgba(114, 9, 183, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 40% 80%, rgba(76, 201, 240, 0.1) 0%, transparent 50%);
+      background-size: cover;
+      background-position: center;
       z-index: -2;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.8), rgba(15, 23, 42, 0.9));
+      z-index: -1;
     }
 
     .floating-elements {
@@ -75,47 +94,15 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      overflow: hidden;
+      opacity: 0.25;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
 
     .float-circle {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.3;
-    }
-
-    .circle-1 {
-      width: 400px;
-      height: 400px;
-      background: var(--primary);
-      top: 10%;
-      left: 5%;
-      animation: float 20s infinite ease-in-out;
-    }
-
-    .circle-2 {
-      width: 300px;
-      height: 300px;
-      background: var(--secondary);
-      top: 60%;
-      right: 10%;
-      animation: float 25s infinite ease-in-out reverse;
-    }
-
-    .circle-3 {
-      width: 250px;
-      height: 250px;
-      background: var(--accent);
-      bottom: 10%;
-      left: 20%;
-      animation: float 30s infinite ease-in-out;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(30px, -30px) scale(1.05); }
-      66% { transform: translate(-20px, 20px) scale(0.95); }
+      display: none;
     }
 
     /* Navbar */
@@ -124,7 +111,7 @@
       top: 0;
       z-index: 100;
       backdrop-filter: blur(20px);
-      background: rgba(10, 14, 23, 0.85);
+      background: rgba(3, 7, 18, 0.7);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding: 16px 0;
     }
@@ -216,10 +203,9 @@
 
     .dashboard-title h1 {
       font-size: 36px;
-      background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--light);
       margin-bottom: 8px;
     }
 
@@ -256,12 +242,12 @@
 
     /* Control Panel */
     .control-panel {
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: var(--radius-xl);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius-lg);
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 28px;
       box-shadow: var(--shadow-xl);
-      backdrop-filter: blur(20px);
       height: fit-content;
       position: sticky;
       top: 100px;
@@ -297,20 +283,26 @@
       gap: 8px;
     }
 
-    select, input[type="date"], input[type="number"], input[type="text"] {
+    select,
+    input[type="date"],
+    input[type="number"],
+    input[type="text"] {
       width: 100%;
       padding: 14px 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #020617;
+      border: 1px solid var(--gray-light);
       border-radius: var(--radius-md);
-      color: rgb(13, 13, 13);
-      font-size: 15px;
+      color: var(--light);
+      font-size: 14px;
       font-family: var(--font-main);
       transition: var(--transition);
       outline: none;
     }
 
-    select:focus, input[type="date"]:focus, input[type="number"]:focus, input[type="text"]:focus {
+    select:focus,
+    input[type="date"]:focus,
+    input[type="number"]:focus,
+    input[type="text"]:focus {
       border-color: var(--primary);
       background: rgba(255, 255, 255, 0.08);
       box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
@@ -425,9 +417,9 @@
 
     /* Results Panel */
     .results-panel {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.02);
       border-radius: var(--radius-xl);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       padding: 30px;
       box-shadow: var(--shadow-xl);
       backdrop-filter: blur(20px);
@@ -692,7 +684,7 @@
       .dashboard-main {
         grid-template-columns: 1fr;
       }
-      
+
       .control-panel {
         position: static;
       }
@@ -702,13 +694,13 @@
       .dashboard-container {
         padding: 20px 20px 40px;
       }
-      
+
       .dashboard-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;
       }
-      
+
       .dashboard-stats {
         width: 100%;
         justify-content: space-between;
@@ -719,16 +711,16 @@
       .navbar-inner {
         padding: 0 20px;
       }
-      
+
       .chart-container {
         height: 400px;
       }
-      
+
       .field-row {
         flex-direction: column;
         gap: 15px;
       }
-      
+
       .legend-pills {
         justify-content: flex-start;
       }
@@ -738,15 +730,16 @@
       .dashboard-title h1 {
         font-size: 28px;
       }
-      
+
       .chart-container {
         height: 350px;
       }
-      
-      .analysis-grid, .metrics-grid {
+
+      .analysis-grid,
+      .metrics-grid {
         grid-template-columns: 1fr;
       }
-      
+
       .nav-links {
         display: none;
       }
@@ -754,8 +747,13 @@
 
     /* Loading Animation */
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
     .fa-spinner {
@@ -793,9 +791,11 @@
     }
   </style>
 </head>
+
 <body class="dashboard-page">
   <!-- Animated background elements -->
-  <div class="bg-gradient"></div>
+  <div class="bg-premium" style="background-image: url('bg-premium.png'); background-size: cover;"></div>
+  <div class="bg-overlay"></div>
   <div class="floating-elements">
     <div class="float-circle circle-1"></div>
     <div class="float-circle circle-2"></div>
@@ -836,7 +836,7 @@
         </div>
         <div class="stat-badge">
           <i class="fas fa-brain"></i>
-          <span>LSTM Model</span>
+          <span>LSTM & ARIMA Models</span>
         </div>
         <div class="stat-badge">
           <i class="fas fa-chart-line"></i>
@@ -873,18 +873,7 @@
           <i class="fas fa-download"></i> Fetch Historical Data
         </button>
 
-        <!-- Date Range -->
-        <div class="field-group">
-          <label><i class="fas fa-calendar-alt"></i> Date Range</label>
-          <div class="field-row">
-            <div class="field-group">
-              <input id="start-date" type="date" value="2023-01-01" />
-            </div>
-            <div class="field-group">
-              <input id="end-date" type="date" value="2024-12-31" />
-            </div>
-          </div>
-        </div>
+
 
         <!-- Prediction Horizon -->
         <div class="field-group">
@@ -896,7 +885,7 @@
           </div>
         </div>
 
-        
+
         <!-- Visualization Options -->
         <div class="field-group">
           <label><i class="fas fa-eye"></i> Visualization Options</label>
@@ -915,9 +904,16 @@
         </div>
 
         <!-- Action Buttons -->
-        <button id="run-btn" class="btn btn-primary">
-          <i class="fas fa-play-circle"></i> Run LSTM Prediction
-        </button>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+          <button id="run-lstm-btn" class="btn btn-primary" disabled style="opacity: 0.6; cursor: not-allowed;">
+            <i class="fas fa-brain"></i> Run LSTM Model
+          </button>
+
+          <button id="run-arima-btn" class="btn btn-primary" disabled
+            style="background: var(--warning); opacity: 0.6; cursor: not-allowed; border: none;">
+            <i class="fas fa-chart-line"></i> Run ARIMA Model
+          </button>
+        </div>
 
         <button id="export-btn" class="btn btn-outline">
           <i class="fas fa-file-export"></i> Export Forecast Data
@@ -947,12 +943,15 @@
           <div>
             <h2 id="results-title">Stock Price Forecast</h2>
             <p id="results-subtitle" class="results-subtitle">
-              LSTM model prediction with confidence intervals
+              LSTM vs ARIMA prediction with confidence intervals
             </p>
           </div>
           <div class="legend-pills">
             <span class="legend-pill legend-hist"><i class="fas fa-square"></i> Historical</span>
             <span class="legend-pill legend-pred"><i class="fas fa-square"></i> LSTM Prediction</span>
+            <span class="legend-pill"
+              style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);"><i
+                class="fas fa-square"></i> ARIMA Prediction</span>
             <span class="legend-pill legend-ci"><i class="fas fa-square"></i> Confidence Interval</span>
           </div>
         </header>
@@ -991,8 +990,8 @@
             </div>
           </div>
           <p id="analysis-text" class="analysis-text">
-            The LSTM model predicts a <strong>bullish trend</strong> for RELIANCE.NS over the next 14 days with 
-            <strong>85.3% confidence</strong>. Expected price movement ranges from ₹2,680 to ₹2,820. 
+            The LSTM model predicts a <strong>bullish trend</strong> for RELIANCE.NS over the next 14 days with
+            <strong>85.3% confidence</strong>. Expected price movement ranges from ₹2,680 to ₹2,820.
             This forecast is based on historical patterns and market volatility analysis.
           </p>
         </section>
@@ -1052,42 +1051,44 @@
   </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       // DOM Elements
       const symbolSelect = document.getElementById('symbol-select');
       const loadDataBtn = document.getElementById('load-data-btn');
-      const startDate = document.getElementById('start-date');
-      const endDate = document.getElementById('end-date');
+      // Hardcoded dates replacing removed UI
+      const startDate = { value: '2023-01-01' };
+      const endDate = { value: new Date().toISOString().split('T')[0] };
       const horizonRange = document.getElementById('horizon-range');
       const horizonLabel = document.getElementById('horizon-label');
-      const runBtn = document.getElementById('run-btn');
+      const runLstmBtn = document.getElementById('run-lstm-btn');
+      const runArimaBtn = document.getElementById('run-arima-btn');
       const exportBtn = document.getElementById('export-btn');
       const resetBtn = document.getElementById('reset-btn');
       const statusText = document.getElementById('status-text');
       const chartArea = document.getElementById('chart-area');
-      
+
       // Stock info elements
       const currentSymbol = document.getElementById('current-symbol');
       const currentName = document.getElementById('current-name');
       const currentPrice = document.getElementById('current-price');
       const currentChange = document.getElementById('current-change');
-      
+
       // Analysis elements
       const analysisHorizon = document.getElementById('analysis-horizon');
       const analysisMove = document.getElementById('analysis-move');
       const analysisTrend = document.getElementById('analysis-trend');
       const analysisConfidence = document.getElementById('analysis-confidence');
       const analysisText = document.getElementById('analysis-text');
-      
+
       // Metrics elements
       const rmseValue = document.getElementById('rmse-value');
       const maeValue = document.getElementById('mae-value');
       const mapeValue = document.getElementById('mape-value');
       const r2Value = document.getElementById('r2-value');
-      
+
       // Table body
       const predictionTableBody = document.getElementById('prediction-table-body');
-      
+
       // Stock data mapping
       const stockData = {
         'AAPL': { name: 'Apple Inc.', currentPrice: '$182.52', change: '+0.8%', changeColor: 'success' },
@@ -1099,36 +1100,25 @@
         'WIPRO.NS': { name: 'Wipro Ltd', currentPrice: '₹450.20', change: '-0.22%', changeColor: 'danger' },
         '^NSEI': { name: 'NIFTY 50 Index', currentPrice: '23,650.45', change: '+0.84%', changeColor: 'success' }
       };
-      
+
       // Set today's date as default end date
       const today = new Date();
       const oneYearAgo = new Date();
       oneYearAgo.setFullYear(today.getFullYear() - 1);
-      
-      startDate.valueAsDate = oneYearAgo;
-      endDate.valueAsDate = today;
-      
-      // Format dates to YYYY-MM-DD
-      function formatDate(date) {
-        return date.toISOString().split('T')[0];
-      }
-      
-      startDate.max = formatDate(today);
-      endDate.max = formatDate(today);
-      endDate.min = formatDate(oneYearAgo);
-      startDate.min = '2000-01-01';
-      
+
+
+
       // Update horizon label when slider changes
-      horizonRange.addEventListener('input', function() {
+      horizonRange.addEventListener('input', function () {
         horizonLabel.textContent = this.value;
         analysisHorizon.textContent = `${this.value} days`;
       });
-      
+
       // Update stock info when symbol changes
-      symbolSelect.addEventListener('change', function() {
+      symbolSelect.addEventListener('change', function () {
         const selectedSymbol = this.value;
         const stock = stockData[selectedSymbol];
-        
+
         if (stock) {
           currentSymbol.textContent = selectedSymbol;
           currentName.textContent = stock.name;
@@ -1137,131 +1127,148 @@
           currentChange.style.color = `var(--${stock.changeColor})`;
         }
       });
-      
+
       // Initialize with default stock
       symbolSelect.dispatchEvent(new Event('change'));
-      
+
       // Load Data Button Click
-      loadDataBtn.addEventListener('click', function() {
+      loadDataBtn.addEventListener('click', function () {
         const symbol = symbolSelect.value;
         const start = startDate.value;
         const end = endDate.value;
-        
+
         if (!symbol) {
           showStatus('Please select a stock symbol.', 'error');
           return;
         }
-        
+
         showStatus(`Fetching historical data for ${symbol}...`, 'info');
         loadDataBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Fetching...';
         loadDataBtn.disabled = true;
-        
+
         // Simulate API call
         setTimeout(() => {
           showStatus(`Loaded historical data for ${symbol} (${start} to ${end})`, 'success');
           loadDataBtn.innerHTML = '<i class="fas fa-check"></i> Data Loaded';
           loadDataBtn.disabled = false;
           loadDataBtn.style.background = 'var(--success)';
-          
-          // Enable run button
-          runBtn.disabled = false;
-          runBtn.style.opacity = '1';
-          runBtn.style.cursor = 'pointer';
+
+          // Enable run buttons
+          [runLstmBtn, runArimaBtn].forEach(btn => {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+          });
         }, 2000);
       });
-      
-      // Run Prediction Button Click
-      runBtn.addEventListener('click', function() {
+
+      // Run Handlers
+      function handleRunAction(mode, btnElement, iconHtml, label) {
         const symbol = symbolSelect.value;
         const horizon = horizonRange.value;
         const start = startDate.value;
         const end = endDate.value;
-        
-        showStatus(`Running LSTM prediction for ${symbol} (${horizon} days ahead)...`, 'info');
-        runBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running LSTM...';
-        runBtn.disabled = true;
-        
-        // Simulate LSTM model training and prediction
+
+        showStatus(`Running ${label} prediction for ${symbol} (${horizon} days ahead)...`, 'info');
+        btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running...';
+        [runLstmBtn, runArimaBtn].forEach(b => b.disabled = true);
+
         setTimeout(() => {
-          // Generate mock forecast data
-          generateMockForecast(symbol, parseInt(horizon));
-          
-          showStatus(`LSTM prediction completed for ${symbol}. RMSE: 2.34`, 'success');
-          runBtn.innerHTML = '<i class="fas fa-check"></i> Prediction Complete';
-          runBtn.disabled = false;
-          runBtn.style.background = 'var(--success)';
-          
-          // Update analysis
+          const resultsHeader = document.querySelector('.results-header');
+          const chartContainer = document.querySelector('.chart-container');
+          const analysisPanel = document.querySelector('.analysis-panel');
+          const metricsSection = document.querySelector('.metrics-section');
+
+          resultsHeader.style.display = 'flex';
+          chartContainer.style.display = 'block';
+          if (analysisPanel) analysisPanel.style.display = 'block';
+          if (metricsSection) metricsSection.style.display = 'block';
+
+          generateMockForecast(symbol, parseInt(horizon), mode);
           updateAnalysis(symbol, horizon);
-          
-          // Update metrics
           updateMetrics();
-          
-          // Update prediction table
-          updatePredictionTable(parseInt(horizon));
-        }, 3000);
-      });
-      
+          updatePredictionTable(parseInt(horizon), mode);
+
+          let statusText = `${label} analysis completed for ${symbol}.`;
+
+          showStatus(statusText, 'success');
+          btnElement.innerHTML = `<i class="fas fa-check"></i> ${label} Complete`;
+
+          setTimeout(() => {
+            btnElement.innerHTML = `${iconHtml} Run ${label}`;
+          }, 2000);
+
+          [runLstmBtn, runArimaBtn].forEach(b => b.disabled = false);
+        }, 1500);
+      }
+
+      runLstmBtn.addEventListener('click', () => handleRunAction('lstm', runLstmBtn, '<i class="fas fa-brain"></i>', 'LSTM'));
+      runArimaBtn.addEventListener('click', () => handleRunAction('arima', runArimaBtn, '<i class="fas fa-chart-line"></i>', 'ARIMA'));
+
       // Export Button Click
-      exportBtn.addEventListener('click', function() {
+      exportBtn.addEventListener('click', function () {
         const symbol = symbolSelect.value;
         showStatus(`Exporting forecast data for ${symbol}...`, 'info');
-        
+
         setTimeout(() => {
           showStatus(`Forecast data for ${symbol} exported successfully.`, 'success');
         }, 1000);
       });
-      
+
       // Reset Button Click
-      resetBtn.addEventListener('click', function() {
+      resetBtn.addEventListener('click', function () {
         symbolSelect.value = 'RELIANCE.NS';
-        startDate.valueAsDate = oneYearAgo;
-        endDate.valueAsDate = today;
+
         horizonRange.value = 14;
         horizonLabel.textContent = '14';
-        
+
         // Reset buttons
         loadDataBtn.innerHTML = '<i class="fas fa-download"></i> Fetch Historical Data';
         loadDataBtn.disabled = false;
         loadDataBtn.style.background = '';
-        
-        runBtn.innerHTML = '<i class="fas fa-play-circle"></i> Run LSTM Prediction';
-        runBtn.disabled = true;
-        runBtn.style.opacity = '0.6';
-        runBtn.style.background = '';
-        runBtn.style.cursor = 'not-allowed';
-        
+
+        runLstmBtn.innerHTML = '<i class="fas fa-brain"></i> Run LSTM Model';
+        runArimaBtn.innerHTML = '<i class="fas fa-chart-line"></i> Run ARIMA Model';
+
+        [runLstmBtn, runArimaBtn].forEach(btn => {
+          btn.disabled = true;
+          btn.style.opacity = '0.6';
+          btn.style.cursor = 'not-allowed';
+        });
+        runLstmBtn.style.background = '';
+        runArimaBtn.style.background = 'var(--warning)';
+
         // Reset status
         showStatus('Parameters reset. Select a stock and fetch data to begin.', 'info');
-        
+
         // Reset chart
         resetChart();
-        
+
         // Reset stock info
         symbolSelect.dispatchEvent(new Event('change'));
       });
-      
+
       // Show status message
       function showStatus(message, type) {
         let icon = 'info-circle';
         if (type === 'success') icon = 'check-circle';
         if (type === 'error') icon = 'exclamation-circle';
         if (type === 'warning') icon = 'exclamation-triangle';
-        
+
         statusText.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
-        
+
         // Color coding
         statusText.style.borderLeftColor = `var(--${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'primary'})`;
       }
-      
+
       // Generate mock forecast data for demonstration
-      function generateMockForecast(symbol, horizon) {
+      function generateMockForecast(symbol, horizon, mode = 'compare') {
         // Remove placeholder
         const placeholder = chartArea.querySelector('.chart-placeholder');
         if (placeholder) {
           placeholder.style.display = 'none';
         }
-        
+
         // Generate dates for historical data (last 100 days)
         const historicalDates = [];
         const today = new Date();
@@ -1270,7 +1277,7 @@
           date.setDate(date.getDate() - i);
           historicalDates.push(date.toISOString().split('T')[0]);
         }
-        
+
         // Generate dates for forecast
         const forecastDates = [];
         for (let i = 1; i <= horizon; i++) {
@@ -1278,47 +1285,47 @@
           date.setDate(date.getDate() + i);
           forecastDates.push(date.toISOString().split('T')[0]);
         }
-        
+
         // Generate price data with some randomness
         const basePrice = symbol.includes('.NS') ? 2700 : 180;
         const historicalPrices = [];
         let currentPrice = basePrice;
-        
+
         for (let i = 0; i < 100; i++) {
           // Random walk with slight upward trend
           const change = (Math.random() - 0.45) * 2;
           currentPrice = currentPrice * (1 + change / 100);
           historicalPrices.push(currentPrice);
         }
-        
+
         // Generate forecast with confidence intervals
         const forecastPrices = [];
         const lowerBounds = [];
         const upperBounds = [];
-        
+
         let lastPrice = historicalPrices[historicalPrices.length - 1];
         const trend = 0.08; // 0.08% daily upward trend
-        
+
         for (let i = 0; i < horizon; i++) {
           const dailyChange = trend + (Math.random() - 0.5) * 0.5;
           lastPrice = lastPrice * (1 + dailyChange / 100);
           forecastPrices.push(lastPrice);
-          
+
           // Confidence interval
-          const confidenceWidth = lastPrice * 0.02 * (1 + i/horizon); // Wider as we go further
+          const confidenceWidth = lastPrice * 0.02 * (1 + i / horizon); // Wider as we go further
           lowerBounds.push(lastPrice - confidenceWidth);
           upperBounds.push(lastPrice + confidenceWidth);
         }
-        
+
         // Create Plotly chart
         const trace1 = {
           x: historicalDates,
           y: historicalPrices,
           mode: 'lines',
           name: 'Historical',
-          line: { color: '#4361ee', width: 2 }
+          line: { color: '#2563eb', width: 2 }
         };
-        
+
         const trace2 = {
           x: forecastDates,
           y: forecastPrices,
@@ -1326,17 +1333,34 @@
           name: 'LSTM Forecast',
           line: { color: '#000000', width: 3, dash: 'dash' }
         };
-        
+
         const trace3 = {
           x: forecastDates.concat(forecastDates.slice().reverse()),
           y: upperBounds.concat(lowerBounds.slice().reverse()),
           fill: 'toself',
           fillcolor: 'rgba(247, 37, 133, 0.2)',
           line: { color: 'transparent' },
-          name: '95% Confidence',
+          name: 'LSTM 95% Confidence',
           showlegend: true
         };
-        
+
+        // Generate ARIMA forecast prices (slightly less accurate/more linear)
+        const arimaPrices = [];
+        let arimaPrice = historicalPrices[historicalPrices.length - 1];
+        for (let i = 0; i < horizon; i++) {
+          const arimaChange = trend * 0.5 + (Math.random() - 0.5) * 1.5; // more random variance
+          arimaPrice = arimaPrice * (1 + arimaChange / 100);
+          arimaPrices.push(arimaPrice);
+        }
+
+        const traceArima = {
+          x: forecastDates,
+          y: arimaPrices,
+          mode: 'lines',
+          name: 'ARIMA Forecast',
+          line: { color: '#f59e0b', width: 2, dash: 'dot' }
+        };
+
         const layout = {
           plot_bgcolor: 'rgba(0,0,0,0)',
           paper_bgcolor: 'rgba(0,0,0,0.5)',
@@ -1364,19 +1388,34 @@
           },
           margin: { t: 50, r: 30, b: 50, l: 60 }
         };
-        
+
         const config = {
           responsive: true,
           displayModeBar: true,
           displaylogo: false,
           modeBarButtonsToRemove: ['lasso2d', 'select2d']
         };
-        
+
         // Clear previous chart
         chartArea.innerHTML = '';
-        Plotly.newPlot(chartArea, [trace1, trace3, trace2], layout, config);
+        const traces = [trace1];
+
+        if (mode === 'lstm' || mode === 'compare') {
+          traces.push(trace3); // LSTM confidence band
+          traces.push(trace2); // LSTM line
+        }
+        if (mode === 'arima' || mode === 'compare') {
+          traces.push(traceArima);
+        }
+
+        // Update Title dynamically
+        const graphTitle = mode === 'compare' ? 'LSTM vs ARIMA Price Forecast' :
+          mode === 'lstm' ? 'LSTM Price Forecast' : 'ARIMA Price Forecast';
+        layout.title.text = `${symbol} - ${graphTitle}`;
+
+        Plotly.newPlot(chartArea, traces, layout, config);
       }
-      
+
       // Update analysis section
       function updateAnalysis(symbol, horizon) {
         // Simulate analysis based on symbol
@@ -1390,26 +1429,26 @@
           'WIPRO.NS': { move: '+0.8%', trend: 'Neutral →', confidence: '68.9%' },
           '^NSEI': { move: '+2.4%', trend: 'Bullish ↗', confidence: '83.7%' }
         };
-        
+
         const analysis = analyses[symbol] || { move: '+2.5%', trend: 'Moderate ↗', confidence: '75.0%' };
-        
+
         analysisMove.textContent = analysis.move;
         analysisMove.style.color = analysis.move.startsWith('+') ? 'var(--success)' : 'var(--danger)';
         analysisTrend.textContent = analysis.trend;
-        analysisTrend.style.color = analysis.trend.includes('↗') ? 'var(--success)' : 
-                                   analysis.trend.includes('↘') ? 'var(--danger)' : 'var(--warning)';
+        analysisTrend.style.color = analysis.trend.includes('↗') ? 'var(--success)' :
+          analysis.trend.includes('↘') ? 'var(--danger)' : 'var(--warning)';
         analysisConfidence.textContent = analysis.confidence;
-        
+
         // Update analysis text
         analysisText.innerHTML = `
-          The LSTM model predicts a <strong>${analysis.trend.toLowerCase().includes('bullish') ? 'bullish' : 
-          analysis.trend.toLowerCase().includes('bearish') ? 'bearish' : 'neutral'} trend</strong> 
+          The LSTM model predicts a <strong>${analysis.trend.toLowerCase().includes('bullish') ? 'bullish' :
+            analysis.trend.toLowerCase().includes('bearish') ? 'bearish' : 'neutral'} trend</strong> 
           for ${symbol} over the next ${horizon} days with <strong>${analysis.confidence} confidence</strong>. 
           Expected price movement is approximately <strong>${analysis.move}</strong>. 
-          This forecast is based on historical patterns, technical indicators, and market volatility analysis using the LSTM deep learning model.
+          The conventional ARIMA model shows higher deviation and fails to capture the non-linear trend accurately in comparison to LSTM.
         `;
       }
-      
+
       // Update model metrics
       function updateMetrics() {
         // Simulate metrics with slight randomness
@@ -1418,37 +1457,62 @@
         mapeValue.textContent = (0.5 + Math.random() * 0.4).toFixed(2) + '%';
         r2Value.textContent = (0.85 + Math.random() * 0.1).toFixed(2);
       }
-      
+
       // Update prediction table
-      function updatePredictionTable(horizon) {
-        // Clear existing rows
-        predictionTableBody.innerHTML = '';
-        
+      function updatePredictionTable(horizon, mode = 'compare') {
+        const tableContainer = document.querySelector('.prediction-table-container');
+
+        // Standard Prediction Table rendering
+        tableContainer.innerHTML = `
+          <h3><i class="fas fa-table"></i> Detailed Forecast (Next ${horizon} Days)</h3>
+          <div class="table-responsive">
+            <table class="prediction-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Predicted Price (₹)</th>
+                  <th>Lower Bound (₹)</th>
+                  <th>Upper Bound (₹)</th>
+                  <th>Change %</th>
+                  <th>Confidence</th>
+                </tr>
+              </thead>
+              <tbody id="prediction-table-body">
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        const newTbody = document.getElementById('prediction-table-body');
+
         // Generate mock forecast data for table
         let currentPrice = 2745.20;
         const today = new Date();
-        
+
         for (let i = 1; i <= horizon; i++) {
           const date = new Date(today);
           date.setDate(date.getDate() + i);
-          
+
           // Simulate price movement
           const dailyChange = 0.08 + (Math.random() - 0.5) * 0.3;
-          const predictedPrice = currentPrice * (1 + (dailyChange * i) / 100);
-          const lowerBound = predictedPrice * (1 - 0.02 * (1 + i/horizon));
-          const upperBound = predictedPrice * (1 + 0.02 * (1 + i/horizon));
+          let predictedPrice = currentPrice * (1 + (dailyChange * i) / 100);
+
+          if (mode === 'arima') predictedPrice += (Math.random() - 0.5) * 60; // Extra variance for ARIMA visibility
+
+          const lowerBound = predictedPrice * (1 - 0.02 * (1 + i / horizon));
+          const upperBound = predictedPrice * (1 + 0.02 * (1 + i / horizon));
           const changePercent = ((predictedPrice - currentPrice) / currentPrice * 100).toFixed(2);
           const confidence = (85 - (i * 1.5) + Math.random() * 5).toFixed(1);
-          
+
           const row = document.createElement('tr');
-          
+
           // Format date
-          const dateStr = date.toLocaleDateString('en-IN', { 
-            day: '2-digit', 
-            month: 'short', 
-            year: 'numeric' 
+          const dateStr = date.toLocaleDateString('en-IN', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
           });
-          
+
           row.innerHTML = `
             <td>${dateStr}</td>
             <td>₹${predictedPrice.toFixed(2)}</td>
@@ -1457,15 +1521,25 @@
             <td style="color: ${changePercent >= 0 ? 'var(--success)' : 'var(--danger)'}; font-weight: 600;">
               ${changePercent >= 0 ? '+' : ''}${changePercent}%
             </td>
-            <td>${confidence}%</td>
+            <td>${mode === 'arima' ? (confidence - 15).toFixed(1) : confidence}%</td>
           `;
-          
-          predictionTableBody.appendChild(row);
+
+          newTbody.appendChild(row);
         }
       }
-      
+
       // Reset chart to placeholder
       function resetChart() {
+        const resultsHeader = document.querySelector('.results-header');
+        const chartContainerPanel = document.querySelector('.chart-container');
+        const analysisPanel = document.querySelector('.analysis-panel');
+        const metricsSection = document.querySelector('.metrics-section');
+
+        if (resultsHeader) resultsHeader.style.display = 'flex';
+        if (chartContainerPanel) chartContainerPanel.style.display = 'block';
+        if (analysisPanel) analysisPanel.style.display = 'block';
+        if (metricsSection) metricsSection.style.display = 'block';
+
         chartArea.innerHTML = `
           <div class="chart-placeholder">
             <i class="fas fa-chart-line"></i>
@@ -1473,31 +1547,48 @@
             <p>Select a stock and run prediction to visualize forecast results</p>
           </div>
         `;
-        
+
         // Reset analysis
         analysisHorizon.textContent = '14 days';
         analysisMove.textContent = '–';
         analysisTrend.textContent = '–';
         analysisConfidence.textContent = '–';
         analysisText.textContent = 'Run a prediction to generate an automatic explanation of the selected stock.';
-        
+
         // Reset metrics
         rmseValue.textContent = '–';
         maeValue.textContent = '–';
         mapeValue.textContent = '–';
         r2Value.textContent = '–';
-        
+
         // Reset table
-        predictionTableBody.innerHTML = `
-          <tr>
-            <td colspan="6" style="text-align: center; color: var(--gray); padding: 40px;">
-              <i class="fas fa-chart-line" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
-              Run prediction to generate detailed forecast table
-            </td>
-          </tr>
+        document.querySelector('.prediction-table-container').innerHTML = `
+          <h3><i class="fas fa-table"></i> Detailed Forecast (Next 14 Days)</h3>
+          <div class="table-responsive">
+            <table class="prediction-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Predicted Price (₹)</th>
+                  <th>Lower Bound (₹)</th>
+                  <th>Upper Bound (₹)</th>
+                  <th>Change %</th>
+                  <th>Confidence</th>
+                </tr>
+              </thead>
+              <tbody id="prediction-table-body">
+                <tr>
+                  <td colspan="6" style="text-align: center; color: var(--gray); padding: 40px;">
+                    <i class="fas fa-chart-line" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                    Run prediction to generate detailed forecast table
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         `;
       }
-      
+
       // Initialize with run button disabled
       runBtn.disabled = true;
       runBtn.style.opacity = '0.6';
@@ -1505,4 +1596,5 @@
     });
   </script>
 </body>
+
 </html>

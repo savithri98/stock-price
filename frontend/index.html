@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>StockVision AI – Advanced Stock Analysis Platform</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
   <!-- Animated background elements -->
-  <div class="bg-gradient"></div>
+  <div class="bg-premium" style="background-image: url('bg-premium.png');"></div>
+  <div class="bg-overlay"></div>
   <div class="floating-elements">
     <div class="float-circle circle-1"></div>
     <div class="float-circle circle-2"></div>
@@ -18,7 +22,7 @@
   </div>
 
   <!-- Navbar -->
-  <header class="navbar">
+  <header class="navbar glass">
     <div class="navbar-inner">
       <div class="nav-brand">
         <div class="nav-logo">
@@ -30,11 +34,11 @@
         </div>
       </div>
       <nav class="nav-links">
-        <a href="#markets" class="nav-link"><i class="fas fa-chart-bar"></i> Markets</a>
+        <a href="#markets" class="nav-link"><i class="fas fa-chart-pie"></i> Markets</a>
         <a href="#ideas" class="nav-link"><i class="fas fa-lightbulb"></i> Ideas</a>
-        <a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
         <a href="#support" class="nav-link"><i class="fas fa-headset"></i> Support</a>
-        <a href="login.html" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="login.html" class="btn-primary" style="padding: 10px 24px;"><i class="fas fa-sign-in-alt"></i>
+          Login</a>
       </nav>
       <button class="mobile-menu-btn">
         <i class="fas fa-bars"></i>
@@ -43,37 +47,33 @@
   </header>
 
   <!-- Live market data strip -->
-  <section class="live-data-strip">
+  <section class="live-data-strip glass-morphism">
     <div class="live-data-inner">
       <div class="live-ticker">
         <div class="ticker-item active">
           <span class="ticker-label">NIFTY 50</span>
-          <span class="ticker-value">23,650.45</span>
-          <span class="ticker-change up">+0.84% <i class="fas fa-arrow-up"></i></span>
+          <span class="ticker-value">24,120.45</span>
+          <span class="ticker-change up">+1.24% <i class="fas fa-arrow-up"></i></span>
         </div>
         <div class="ticker-item">
           <span class="ticker-label">SENSEX</span>
-          <span class="ticker-value">78,320.12</span>
-          <span class="ticker-change up">+0.67% <i class="fas fa-arrow-up"></i></span>
+          <span class="ticker-value">79,420.12</span>
+          <span class="ticker-change up">+0.95% <i class="fas fa-arrow-up"></i></span>
         </div>
         <div class="ticker-item">
           <span class="ticker-label">NIFTY BANK</span>
-          <span class="ticker-value">51,210.90</span>
-          <span class="ticker-change down">‑0.23% <i class="fas fa-arrow-down"></i></span>
-        </div>
-        <div class="ticker-item">
-          <span class="ticker-label">INDIA VIX</span>
-          <span class="ticker-value">12.21</span>
-          <span class="ticker-change down">‑1.05% <i class="fas fa-arrow-down"></i></span>
+          <span class="ticker-value">52,110.90</span>
+          <span class="ticker-change down">‑0.15% <i class="fas fa-arrow-down"></i></span>
         </div>
       </div>
       <div class="market-mood">
         <div class="mood-indicator">
-          <div class="mood-dot"></div>
-          <span>Market Mood: <strong>Neutral</strong></span>
+          <div class="mood-dot" style="background: var(--success);"></div>
+          <span>Market Mood: <strong style="color: var(--success);">Bullish</strong></span>
         </div>
-        <a href="login.html" class="btn-dashboard">
-          <i class="fas fa-tachometer-alt"></i> Launch Dashboard
+        <a href="login.html" class="btn-primary"
+          style="padding: 8px 16px; font-size: 13px; background: var(--grad-indigo);">
+          <i class="fas fa-rocket"></i> Launch Terminal
         </a>
       </div>
     </div>
@@ -82,24 +82,26 @@
   <!-- Hero Section -->
   <main class="landing-container">
     <section class="hero-section">
-      <div class="hero-content">
-        <div class="hero-badge">
-          <i class="fas fa-graduation-cap"></i>
-          <span>Academic Stock Analysis Project</span>
+      <div class="hero-content reveal-up">
+        <div class="hero-badge glass-morphism">
+          <i class="fas fa-stars" style="color: var(--accent);"></i>
+          <span>The Next Generation of Analysis</span>
         </div>
         <h1 class="hero-title">
-          Visualize, Analyse & Forecast
-          <span class="gradient-text">Indian Markets</span> with AI
+          The Future of
+          <span class="gradient-text">Stock Intelligence</span>
         </h1>
         <p class="hero-description">
-          A complete web application combining LSTM forecasting, real-time Yahoo Finance data, and an intuitive dashboard — designed for academic demonstrations and project evaluations.
+          Experience academic-grade prediction power with a cinematic interface. Levering LSTM neural networks and ARIMA
+          time-series models for unparalleled market insights.
         </p>
         <div class="hero-actions">
-          <a href="login.html" class="btn-primary">
-            <i class="fas fa-mobile-alt"></i> Login with Mobile OTP
+          <a href="login.html" class="btn-primary"
+            style="background: var(--grad-premium); border-radius: 12px; padding: 18px 36px;">
+            <i class="fas fa-sparkles"></i> Get Started Free
           </a>
-          <a href="knowmore.html" class="btn-outline">
-            <i class="fas fa-rocket"></i> Get Knowledge on stocks
+          <a href="knowmore.html" class="btn-outline" style="border-radius: 12px; padding: 18px 36px;">
+            <i class="fas fa-book-open"></i> View Research
           </a>
         </div>
         <div class="hero-stats">
@@ -534,7 +536,7 @@
           </div>
           <h2>Have Questions? We're Here to Help</h2>
           <p>Reach out to the team for doubts, feedback or collaboration opportunities.</p>
-          
+
           <div class="contact-card">
             <div class="contact-avatar">
               <i class="fas fa-user-circle"></i>
@@ -543,7 +545,7 @@
               <h3>StockVision Support</h3>
               <p class="contact-name">Ananya G L</p>
               <p class="contact-role">Creator · StockVision AI</p>
-              
+
               <div class="contact-methods">
                 <div class="method">
                   <i class="fas fa-envelope"></i>
@@ -569,50 +571,51 @@
               </div>
             </div>
           </div>
-          
+
           <div class="disclaimer">
             <i class="fas fa-exclamation-circle"></i>
             <p>This application is for academic and educational use only and does not provide investment advice.</p>
           </div>
         </div>
-        
+
         <div class="contact-form">
           <div class="form-header">
             <h3>Send a Quick Message</h3>
             <p>Share your thoughts or contact the team.</p>
           </div>
-          
+
           <!-- Formspree Contact Form - -->
           <form action="https://formspree.io/f/mjknjawj" method="POST" id="contactForm">
             <!-- Hidden Formspree fields for better control -->
             <input type="hidden" name="_subject" value="New Message from StockVision AI Website">
             <input type="hidden" name="_replyto" id="replyto-field">
             <input type="text" name="_gotcha" style="display:none">
-            
+
             <div class="form-group">
               <label for="name">Your Name</label>
               <input type="text" id="name" name="name" placeholder="Enter your name" required>
             </div>
-            
+
             <div class="form-group">
               <label for="email">Your Email</label>
               <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
-            
+
             <div class="form-group">
               <label for="subject">Subject</label>
               <input type="text" id="subject" name="_subject" placeholder="What is this regarding?" required>
             </div>
-            
+
             <div class="form-group">
               <label for="message">Your Message</label>
-              <textarea id="message" name="message" rows="4" placeholder="Ask a question or share feedback..." required></textarea>
+              <textarea id="message" name="message" rows="4" placeholder="Ask a question or share feedback..."
+                required></textarea>
             </div>
-            
+
             <button type="submit" class="btn-primary">
               <i class="fas fa-paper-plane"></i> Send Message
             </button>
-            
+
             <p class="form-note">We typically respond within 24 hours.</p>
           </form>
         </div>
@@ -633,7 +636,8 @@
             </div>
           </div>
           <p class="footer-description">
-            A stock market analysis and forecasting web application using LSTM, Flask and yfinance, designed for academic demonstrations and project evaluations.
+            A stock market analysis and forecasting web application using LSTM, Flask and yfinance, designed for
+            academic demonstrations and project evaluations.
           </p>
           <div class="footer-social">
             <a href="#"><i class="fab fa-twitter"></i></a>
@@ -642,7 +646,7 @@
             <a href="#"><i class="fab fa-youtube"></i></a>
           </div>
         </div>
-        
+
         <div class="footer-links">
           <div class="link-column">
             <h4>Assets</h4>
@@ -651,7 +655,7 @@
             <a href="#"><i class="fas fa-chevron-right"></i> ETFs</a>
             <a href="#"><i class="fas fa-chevron-right"></i> Sectors</a>
           </div>
-          
+
           <div class="link-column">
             <h4>Tools</h4>
             <a href="dashboard.html"><i class="fas fa-chevron-right"></i> Forecast Dashboard</a>
@@ -659,7 +663,7 @@
             <a href="#"><i class="fas fa-chevron-right"></i> Technical Overlays</a>
             <a href="#"><i class="fas fa-chevron-right"></i> Portfolio Analysis</a>
           </div>
-          
+
           <div class="link-column">
             <h4>Resources</h4>
             <a href="#"><i class="fas fa-chevron-right"></i> Documentation</a>
@@ -669,7 +673,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="footer-bottom">
         <div class="copyright">
           <p>© 2025 StockVision AI • For academic and educational use only.</p>
@@ -685,29 +689,29 @@
 
   <script>
     // Formspree integration enhancements
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const contactForm = document.getElementById('contactForm');
-      
+
       if (contactForm) {
         // Auto-set replyto field from email input
         const emailInput = contactForm.querySelector('#email');
         const replytoField = contactForm.querySelector('#replyto-field');
-        
+
         if (emailInput && replytoField) {
-          emailInput.addEventListener('input', function() {
+          emailInput.addEventListener('input', function () {
             replytoField.value = emailInput.value;
           });
         }
-        
+
         // Optional: Add loading state on form submission
-        contactForm.addEventListener('submit', function() {
+        contactForm.addEventListener('submit', function () {
           const submitBtn = contactForm.querySelector('button[type="submit"]');
           if (submitBtn) {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             submitBtn.disabled = true;
           }
         });
-        
+
         // Check for Formspree success/error in URL
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('success')) {
@@ -723,14 +727,14 @@
             `;
             formHeader.parentNode.insertBefore(successMsg, formHeader.nextSibling);
           }
-          
+
           // Clear the form
           contactForm.reset();
-          
+
           // Remove success parameter from URL
           history.replaceState({}, document.title, window.location.pathname);
         }
-        
+
         if (urlParams.has('error')) {
           // Show error message
           const formHeader = document.querySelector('.contact-form .form-header');
@@ -746,19 +750,19 @@
           }
         }
       }
-      
+
       // Mobile menu toggle
       const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
       const navLinks = document.querySelector('.nav-links');
-      
+
       if (mobileMenuBtn && navLinks) {
-        mobileMenuBtn.addEventListener('click', function() {
+        mobileMenuBtn.addEventListener('click', function () {
           navLinks.classList.toggle('active');
           mobileMenuBtn.querySelector('i').classList.toggle('fa-bars');
           mobileMenuBtn.querySelector('i').classList.toggle('fa-times');
         });
       }
-      
+
       // Live ticker animation
       const tickerItems = document.querySelectorAll('.ticker-item');
       if (tickerItems.length > 0) {
@@ -772,4 +776,5 @@
     });
   </script>
 </body>
+
 </html>

@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>StockVision AI – Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <style>
     :root {
-      --primary: #4361ee;
-      --primary-dark: #3a56d4;
-      --secondary: #7209b7;
-      --accent: #f72585;
-      --success: #4cc9f0;
-      --danger: #f94144;
-      --warning: #f8961e;
-      --dark: #14213d;
-      --dark-light: #1d3557;
-      --light: #f8f9fa;
-      --gray: #6c757d;
-      --gray-light: #e9ecef;
-      --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
-      --gradient-secondary: linear-gradient(135deg, #7209b7, #f72585);
-      --gradient-accent: linear-gradient(135deg, #4cc9f0, #4895ef);
-      --gradient-dark: linear-gradient(135deg, #14213d, #1d3557);
-      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
-      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.16);
-      --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.2);
-      --radius-sm: 8px;
-      --radius-md: 16px;
-      --radius-lg: 24px;
-      --radius-xl: 32px;
+      --primary: #2563eb;
+      /* Electric Azure */
+      --primary-dark: #1d4ed8;
+      --secondary: #0ea5e9;
+      /* Sky Blue */
+      --accent: #f59e0b;
+      /* Amber/Gold */
+      --success: #10b981;
+      /* Emerald Green */
+      --danger: #ef4444;
+      /* Rose Red */
+      --warning: #f59e0b;
+      --dark: #0f172a;
+      /* Slate 900 */
+      --dark-light: #1e293b;
+      /* Slate 800 */
+      --light: #f8fafc;
+      /* Crisp White */
+      --gray: #94a3b8;
+      --gray-light: #334155;
+      --gradient-primary: linear-gradient(135deg, #2563eb, #1e40af);
+      --gradient-secondary: linear-gradient(135deg, #0f172a, #1e293b);
+      --gradient-accent: linear-gradient(135deg, #f59e0b, #d97706);
+      --gradient-dark: linear-gradient(135deg, #020617, #0f172a);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
       --radius-full: 9999px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --transition: all 0.2s ease;
+      --font-main: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
     }
 
     * {
@@ -49,24 +59,33 @@
 
     body {
       font-family: var(--font-main);
-      background-color: #0a0e17;
+      background-color: #030712;
       color: var(--light);
       overflow-x: hidden;
       position: relative;
       min-height: 100vh;
     }
 
-    /* Animated Background Elements */
-    .bg-gradient {
+    /* Sleek Professional Background */
+    .bg-premium {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 20% 50%, rgba(67, 97, 238, 0.15) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 20%, rgba(114, 9, 183, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 40% 80%, rgba(76, 201, 240, 0.1) 0%, transparent 50%);
+      background-size: cover;
+      background-position: center;
       z-index: -2;
+    }
+
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.8), rgba(15, 23, 42, 0.9));
+      z-index: -1;
     }
 
     .floating-elements {
@@ -74,47 +93,15 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      overflow: hidden;
+      opacity: 0.25;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
 
     .float-circle {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.3;
-    }
-
-    .circle-1 {
-      width: 400px;
-      height: 400px;
-      background: var(--primary);
-      top: 10%;
-      left: 5%;
-      animation: float 20s infinite ease-in-out;
-    }
-
-    .circle-2 {
-      width: 300px;
-      height: 300px;
-      background: var(--secondary);
-      top: 60%;
-      right: 10%;
-      animation: float 25s infinite ease-in-out reverse;
-    }
-
-    .circle-3 {
-      width: 250px;
-      height: 250px;
-      background: var(--accent);
-      bottom: 10%;
-      left: 20%;
-      animation: float 30s infinite ease-in-out;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(30px, -30px) scale(1.05); }
-      66% { transform: translate(-20px, 20px) scale(0.95); }
+      display: none;
     }
 
     /* Navbar */
@@ -123,7 +110,7 @@
       top: 0;
       z-index: 100;
       backdrop-filter: blur(20px);
-      background: rgba(10, 14, 23, 0.85);
+      background: rgba(3, 7, 18, 0.7);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding: 16px 0;
     }
@@ -296,12 +283,12 @@
     .login-form-card {
       flex: 1;
       max-width: 480px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(16px);
       border-radius: var(--radius-xl);
       border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 48px 40px;
       box-shadow: var(--shadow-xl);
-      backdrop-filter: blur(20px);
       position: relative;
       overflow: hidden;
     }
@@ -503,7 +490,7 @@
       .login-main {
         gap: 60px;
       }
-      
+
       .login-info h2 {
         font-size: 42px;
       }
@@ -515,13 +502,13 @@
         gap: 60px;
         padding: 40px 24px;
       }
-      
+
       .login-info,
       .login-form-card {
         max-width: 100%;
         width: 100%;
       }
-      
+
       .login-info h2 {
         font-size: 36px;
       }
@@ -531,15 +518,15 @@
       .navbar-inner {
         padding: 0 20px;
       }
-      
+
       .login-main {
         padding: 40px 16px;
       }
-      
+
       .login-form-card {
         padding: 32px 24px;
       }
-      
+
       .login-info h2 {
         font-size: 32px;
       }
@@ -549,15 +536,15 @@
       .nav-links {
         display: none;
       }
-      
+
       .login-info h2 {
         font-size: 28px;
       }
-      
+
       .login-form-card {
         padding: 24px 20px;
       }
-      
+
       .login-otp-row {
         flex-direction: column;
       }
@@ -565,9 +552,17 @@
 
     /* Animation for OTP Input */
     @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
 
     .pulse {
@@ -608,14 +603,21 @@
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
+
 <body class="login-page">
   <!-- Animated background elements -->
-  <div class="bg-gradient"></div>
+  <div class="bg-premium" style="background-image: url('bg-premium.png'); background-size: cover;"></div>
+  <div class="bg-overlay"></div>
   <div class="floating-elements">
     <div class="float-circle circle-1"></div>
     <div class="float-circle circle-2"></div>
@@ -649,7 +651,7 @@
       </div>
       <h2>Sign in with Mobile OTP</h2>
       <p>
-        Use your mobile number to receive a one‑time password and access the advanced stock forecasting dashboard. 
+        Use your mobile number to receive a one‑time password and access the advanced stock forecasting dashboard.
         This OTP flow is implemented for academic and demonstration purposes.
       </p>
       <ul class="login-points">
@@ -710,7 +712,7 @@
   </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       // Elements
       const phoneInput = document.getElementById('phone');
       const otpInput = document.getElementById('otp');
@@ -726,32 +728,32 @@
       let timeLeft = 300; // 5 minutes in seconds
 
       // Phone number validation - FIXED VERSION
-      phoneInput.addEventListener('input', function(e) {
+      phoneInput.addEventListener('input', function (e) {
         // Allow only numbers
         this.value = this.value.replace(/\D/g, '');
-        
+
         // Limit to 10 digits
         if (this.value.length > 10) {
           this.value = this.value.slice(0, 10);
         }
-        
+
         // Update button state
         updateSendButtonState();
       });
 
       // OTP input formatting
-      otpInput.addEventListener('input', function(e) {
+      otpInput.addEventListener('input', function (e) {
         // Allow only numbers
         this.value = this.value.replace(/\D/g, '');
-        
+
         // Limit to 6 digits
         if (this.value.length > 6) {
           this.value = this.value.slice(0, 6);
         }
-        
+
         // Update button state
         updateVerifyButtonState();
-        
+
         // Add pulse animation when typing
         if (this.value.length > 0) {
           this.classList.add('pulse');
@@ -763,7 +765,7 @@
       function updateSendButtonState() {
         // Get raw phone number (without any formatting)
         const rawPhoneNumber = phoneInput.value.replace(/\D/g, '');
-        
+
         if (rawPhoneNumber.length === 10) {
           sendOtpBtn.disabled = false;
           sendOtpBtn.style.opacity = '1';
@@ -793,10 +795,10 @@
       updateVerifyButtonState();
 
       // Send OTP button click - FIXED VALIDATION
-      sendOtpBtn.addEventListener('click', function() {
+      sendOtpBtn.addEventListener('click', function () {
         // Get raw phone number (without any formatting)
         const rawPhoneNumber = phoneInput.value.replace(/\D/g, '');
-        
+
         if (rawPhoneNumber.length !== 10) {
           showStatus('Please enter a valid 10-digit mobile number.', 'error');
           return;
@@ -810,34 +812,34 @@
         setTimeout(() => {
           // Success simulation
           otpSent = true;
-          
+
           // Show success message with demo OTP
           showStatus(`OTP sent to +91 ${rawPhoneNumber}. Demo OTP: <strong>123456</strong>`, 'success');
-          
+
           // Reset button
           sendOtpBtn.innerHTML = '<i class="fas fa-check"></i> OTP Sent';
           sendOtpBtn.disabled = true;
           sendOtpBtn.style.background = 'var(--success)';
-          
+
           // Enable OTP field
           otpInput.disabled = false;
           otpInput.focus();
-          
+
           // Start OTP timer
           startTimer();
-          
+
           // Show OTP timer
           otpTimer.style.display = 'block';
-          
+
           // Update verify button state
           updateVerifyButtonState();
         }, 1500);
       });
 
       // Verify OTP button click
-      verifyOtpBtn.addEventListener('click', function() {
+      verifyOtpBtn.addEventListener('click', function () {
         const enteredOtp = otpInput.value;
-        
+
         if (enteredOtp.length !== 6) {
           showStatus('Please enter a valid 6-digit OTP.', 'error');
           return;
@@ -852,22 +854,22 @@
           // For demo purposes, accept any 6-digit number or "123456"
           if (enteredOtp === '123456' || enteredOtp.length === 6) {
             showStatus('OTP verified successfully! Redirecting to dashboard...', 'success');
-            
+
             // Change button to success state
             verifyOtpBtn.innerHTML = '<i class="fas fa-check"></i> Verified!';
             verifyOtpBtn.style.background = 'var(--success)';
             verifyOtpBtn.style.borderColor = 'var(--success)';
-            
+
             // Stop timer
             clearInterval(timerInterval);
-            
+
             // Redirect to dashboard after 2 seconds
             setTimeout(() => {
               window.location.href = 'dashboard.html';
             }, 2000);
           } else {
             showStatus('Invalid OTP. Please try again.', 'error');
-            
+
             // Reset button
             verifyOtpBtn.innerHTML = '<i class="fas fa-check-circle"></i> Verify & Continue';
             verifyOtpBtn.disabled = false;
@@ -880,7 +882,7 @@
         loginStatus.innerHTML = message;
         loginStatus.className = 'login-status ' + type;
         loginStatus.style.display = 'flex';
-        
+
         // Auto-hide info messages after 5 seconds
         if (type === 'info') {
           setTimeout(() => {
@@ -893,23 +895,23 @@
       function startTimer() {
         timeLeft = 300; // Reset to 5 minutes
         updateTimerDisplay();
-        
+
         timerInterval = setInterval(() => {
           timeLeft--;
           updateTimerDisplay();
-          
+
           if (timeLeft <= 0) {
             clearInterval(timerInterval);
             otpSent = false;
             showStatus('OTP has expired. Please request a new one.', 'error');
             otpTimer.style.display = 'none';
-            
+
             // Reset send button
             sendOtpBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP';
             sendOtpBtn.disabled = false;
             sendOtpBtn.style.background = '';
             updateSendButtonState();
-            
+
             // Disable OTP field
             otpInput.disabled = true;
             otpInput.value = '';
@@ -922,7 +924,7 @@
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
         timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        
+
         // Change color when less than 1 minute
         if (timeLeft < 60) {
           timerDisplay.style.color = 'var(--danger)';
@@ -934,7 +936,7 @@
       }
 
       // Enter key to submit
-      phoneInput.addEventListener('keypress', function(e) {
+      phoneInput.addEventListener('keypress', function (e) {
         // Get raw phone number for validation
         const rawPhoneNumber = this.value.replace(/\D/g, '');
         if (e.key === 'Enter' && rawPhoneNumber.length === 10) {
@@ -942,14 +944,14 @@
         }
       });
 
-      otpInput.addEventListener('keypress', function(e) {
+      otpInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter' && this.value.length === 6 && otpSent) {
           verifyOtpBtn.click();
         }
       });
 
       // Format phone number display on blur (visual only, doesn't affect validation)
-      phoneInput.addEventListener('blur', function() {
+      phoneInput.addEventListener('blur', function () {
         const rawPhoneNumber = this.value.replace(/\D/g, '');
         if (rawPhoneNumber.length === 10) {
           // Format: XXX XXX XXXX
@@ -957,7 +959,7 @@
         }
       });
 
-      phoneInput.addEventListener('focus', function() {
+      phoneInput.addEventListener('focus', function () {
         // Remove spaces when focused for editing
         this.value = this.value.replace(/\s/g, '');
       });
@@ -965,11 +967,11 @@
       // Add visual feedback for inputs
       const inputs = document.querySelectorAll('input');
       inputs.forEach(input => {
-        input.addEventListener('focus', function() {
+        input.addEventListener('focus', function () {
           this.parentElement.style.transform = 'translateY(-2px)';
         });
-        
-        input.addEventListener('blur', function() {
+
+        input.addEventListener('blur', function () {
           this.parentElement.style.transform = 'translateY(0)';
         });
       });
@@ -981,4 +983,5 @@
     });
   </script>
 </body>
+
 </html>

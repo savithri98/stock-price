@@ -10,7 +10,7 @@ import os
 
 
 
-from data_utils import fetch_stock_data, prepare_lstm_data, make_future_predictions
+from data_utils import fetch_stock_data, prepare_lstm_data, make_future_predictions, make_arima_predictions
 from model import train_and_save_model, load_lstm_model, MODEL_PATH
 
 # >>> put your API key here <<<
@@ -141,6 +141,8 @@ def predict():
             model, scaled[:, 0], scaler, horizon, TIME_STEPS
         )
 
+        arima_forecast = make_arima_predictions(df, horizon)
+
         # build history list
         history = [
             {"date": d.strftime("%Y-%m-%d"), "close": float(c)}
@@ -149,7 +151,7 @@ def predict():
 
         last_date = df.index[-1]
         pred_points = []
-        for i, p in enumerate(preds, 1):
+        for i, (p, a_p) in enumerate(zip(preds, arima_forecast), 1):
             d = last_date + timedelta(days=i)
             band = p * 0.04
             pred_points.append(
@@ -158,6 +160,7 @@ def predict():
                     "pred": float(p),
                     "lower": float(p - band),
                     "upper": float(p + band),
+                    "arima": float(a_p),
                 }
             )
 

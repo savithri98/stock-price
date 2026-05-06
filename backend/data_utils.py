@@ -36,3 +36,15 @@ def make_future_predictions(model, scaled_series, scaler, days: int, time_steps:
     preds = np.array(preds).reshape(-1, 1)
     preds_inv = scaler.inverse_transform(preds).flatten()
     return preds_inv
+
+def make_arima_predictions(df: pd.DataFrame, days: int, order=(5,1,0)):
+    from statsmodels.tsa.arima.model import ARIMA
+    history = df["Close"].values
+    try:
+        model = ARIMA(history, order=order)
+        model_fit = model.fit()
+        forecast = model_fit.forecast(steps=days)
+        return forecast.tolist()
+    except Exception as e:
+        print("ARIMA Error:", e)
+        return [history[-1]] * days
